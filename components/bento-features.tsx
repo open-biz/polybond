@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, Zap, Shield, BarChart3 } from "lucide-react";
+import { Search, Zap, Shield, BarChart3, Network } from "lucide-react";
 import { BentoGrid, BentoCard } from "./bento-grid";
 import { Marquee } from "./marquee";
 import styles from "./bento-features.module.css";
@@ -126,10 +126,10 @@ export function BentoFeatures() {
                         background={<YieldBeam />}
                     />
                     <BentoCard
-                        icon={<Shield size={18} />}
-                        name="Risk Shield"
-                        description="AI confidence threshold + 10% stop-loss + 3% conservative failure rate assumption."
-                        cta="Learn more"
+                        icon={<Network size={18} />}
+                        name="OpenServ API"
+                        description="Other AI agents can autonomously hire PolyBond via OpenServ to instantly liquidate their disputed positions."
+                        cta="View documentation"
                         colSpan={1}
                         background={
                             <div className={styles.shieldBg}>

@@ -51,7 +51,7 @@ function AnimatedStat({
 }
 
 export function VaultDashboard() {
-    const [stats, setStats] = useState({ baseYield: 0, compoundedYield: 0 });
+    const [stats, setStats] = useState({ baseYield: 0, compoundedYield: 0, octantDonated: 0 });
 
     useEffect(() => {
         async function fetchStats() {
@@ -83,7 +83,14 @@ export function VaultDashboard() {
                             value={stats.compoundedYield}
                             suffix="% APY"
                             label="Compounded"
-                            delay={500}
+                            delay={400}
+                        />
+                        <div className={styles.divider} />
+                        <AnimatedStat
+                            value={stats.octantDonated}
+                            suffix=" USDC"
+                            label="Public Goods Funded"
+                            delay={600}
                         />
                         <div className={styles.divider} />
                         <TVLCard />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ExternalLink } from "lucide-react";
 import styles from "./vault-positions.module.css";
 
 interface Position {
@@ -12,6 +13,7 @@ interface Position {
     status: "active" | "resolving" | "resolved";
     timeRemaining: string;
     progress: number;
+    receiptUrl?: string;
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -55,13 +57,14 @@ export function VaultPositions() {
                             <th>Current</th>
                             <th>Return</th>
                             <th>Status</th>
+                            <th>Receipt</th>
                             <th>Progress</th>
                         </tr>
                     </thead>
                     <tbody>
                         {isLoading ? (
                             <tr>
-                                <td colSpan={6} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
+                                <td colSpan={7} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
                                     Loading active positions...
                                 </td>
                             </tr>
@@ -77,6 +80,16 @@ export function VaultPositions() {
                                     </span>
                                 </td>
                                 <td>
+                                    {pos.receiptUrl ? (
+                                        <a href={pos.receiptUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'rgba(124, 184, 124, 0.8)', fontSize: '13px', textDecoration: 'none' }}>
+                                            <ExternalLink size={14} />
+                                            <span>BaseScan</span>
+                                        </a>
+                                    ) : (
+                                        <span style={{ color: 'rgba(138, 155, 142, 0.3)', fontSize: '13px' }}>Pending...</span>
+                                    )}
+                                </td>
+                                <td>
                                     <div className={styles.progressWrap}>
                                         <div className={styles.progressBar}>
                                             <div
@@ -90,7 +103,7 @@ export function VaultPositions() {
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan={6} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
+                                <td colSpan={7} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
                                     No active positions yet. Deposit USDC to start earning yield.
                                 </td>
                             </tr>

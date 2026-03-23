@@ -45,6 +45,13 @@ export function VaultActions() {
                 predictedSafe,
             });
 
+            const isDeployed = await protocolKit.isSafeDeployed();
+            if (isDeployed) {
+                const deployedAddress = await protocolKit.getAddress();
+                setSafeAddress(deployedAddress);
+                return;
+            }
+
             const deploymentTransaction = await protocolKit.createSafeDeploymentTransaction();
 
             const txHash = await walletClient.sendTransaction({

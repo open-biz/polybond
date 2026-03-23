@@ -10,6 +10,7 @@
         "status": "active",
         "timeRemaining": "1d 14h",
         "progress": 30,
-        "entryDate": "2026-03-22T14:30:00Z"
+        "entryDate": "2026-03-22T14:30:00Z",
+        "receiptUrl": "https://basescan.org/tx/0xb7714e6d3fb1ce5fb7fad3e1fec4a8e3048e748041fab074f0cabee5d4cbc142"
     }
 ]

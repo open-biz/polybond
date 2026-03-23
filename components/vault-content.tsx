@@ -57,7 +57,7 @@ export function VaultContent() {
                 }}>
                     Please connect your wallet to view your portfolio, manage deposits, and monitor AI-driven dispute yields.
                 </p>
-                <ConnectButton />
+                <ConnectButton showBalance={false} />
             </div>
         );
     }
