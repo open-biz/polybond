@@ -73,7 +73,7 @@ export default function Home() {
       <DisputedMarkets />
 
       {/* Risk Section */}
-      <section className={styles.riskSection}>
+      <section id="risk-management" className={styles.riskSection}>
         <div className={styles.riskContainer}>
           <h2 className={styles.sectionTitle}>Risk Management</h2>
           <div className={styles.riskGrid}>

@@ -32,7 +32,7 @@ function YieldBeam() {
                 <div className={styles.beamPulse} />
             </div>
             <div className={styles.beamNodes}>
-                <div className={styles.beamNode}>97¢</div>
+                <div className={styles.beamNode}>99¢</div>
                 <div className={styles.beamNodeCenter}>AI</div>
                 <div className={styles.beamNode}>$1.00</div>
             </div>
@@ -77,6 +77,7 @@ export function BentoFeatures() {
                         name="AI Dispute Scanner"
                         description="Continuously monitors 1,000+ Polymarket outcomes for spite disputes in real-time."
                         cta="Learn more"
+                        href="#how-it-works"
                         colSpan={1}
                         background={<DotPatternBG />}
                     />
@@ -85,6 +86,7 @@ export function BentoFeatures() {
                         name="Live Bonding Feed"
                         description="Watch the AI agent buy winning shares at a discount across disputed markets."
                         cta="View feed"
+                        href="/vault"
                         colSpan={2}
                         background={
                             <div className={styles.marqueeWrap}>
@@ -118,18 +120,26 @@ export function BentoFeatures() {
                         }
                     />
                     <BentoCard
-                        icon={<BarChart3 size={18} />}
-                        name="Yield Engine"
-                        description="Buy at a discount, resolve at $1.00. High-frequency spread harvesting across multiple market cycles."
-                        cta="View math"
+                        icon={<Shield size={18} />}
+                        name="Risk Shield"
+                        description="AI confidence threshold + 10% stop-loss + 3% conservative failure rate assumption."
+                        cta="Learn more"
+                        href="#risk-management"
                         colSpan={2}
-                        background={<YieldBeam />}
+                        background={
+                            <div className={styles.shieldBg}>
+                                <div className={styles.shieldRing} />
+                                <div className={styles.shieldRing} style={{ animationDelay: "0.5s", width: "100px", height: "100px" }} />
+                                <div className={styles.shieldRing} style={{ animationDelay: "1s", width: "140px", height: "140px" }} />
+                            </div>
+                        }
                     />
                     <BentoCard
                         icon={<Network size={18} />}
                         name="OpenServ API"
                         description="Other AI agents can autonomously hire PolyBond via OpenServ to instantly liquidate their disputed positions."
                         cta="View documentation"
+                        href="https://docs.openserv.ai"
                         colSpan={1}
                         background={
                             <div className={styles.shieldBg}>

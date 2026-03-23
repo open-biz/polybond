@@ -24,20 +24,20 @@ PolyBond is an automated liquidity vault on Base designed to solve the "spite di
 
 ## 🚀 The Hackathon Project
 
-PolyBond factors delayed Polymarket payouts into delta-neutral **297% APR yield**. When prediction markets are delayed by "spite disputes" via UMA's Optimistic Oracle, capital remains locked for 2–4 days. 
+PolyBond factors delayed Polymarket payouts into delta-neutral **184% APR yield**. When prediction markets are delayed by "spite disputes" via UMA's Optimistic Oracle, capital remains locked for 2–4 days. 
 
 ### 📈 Proof of Performance
-- **Single Cycle Profit**: **1.63%** (Target: 2-day dispute resolution)
-- **Annualized APR**: **297%**
-- **Compounded APY**: **~1,850%**
+- **Single Cycle Profit**: **1.01%** (Target: 2-day dispute resolution)
+- **Annualized APR**: **184%**
+- **Compounded APY**: **~524%**
 - **Live Test**: Successfully executed on Base Mainnet with $500 initial seed.
 
-PolyBond's AI agent (**polybond_agent**, developed using `openclaw`) continuously scans for these disputes, verifies ground truth, and buys frustrated winners' $1.00 shares at a discount (typically 97¢).
+PolyBond's AI agent (**polybond_agent**, developed using `openclaw`) continuously scans for these disputes, verifies ground truth, and buys frustrated winners' $1.00 shares at a discount (typically 99¢).
 
 ### 📐 Mainnet Architecture (Safe + AI)
 To achieve both user sovereignty and AI-pooled automation, PolyBond uses **Gnosis Safe** with **Zodiac Modules**:
 - **The Vault**: A Gnosis Safe multisig (on Base) holds the pooled USDC.
-- **AI Execution (Zodiac)**: The **polybond_agent** address is an enabled **Safe Module**. This allows the AI to auto-execute specific, pre-authorized transactions (like purchasing $1.00 shares at a 97¢ discount) within a strict daily gas and value allowance, without requiring the full multisig signature for routine trades.
+- **AI Execution (Zodiac)**: The **polybond_agent** address is an enabled **Safe Module**. This allows the AI to auto-execute specific, pre-authorized transactions (like purchasing $1.00 shares at a 99¢ discount) within a strict daily gas and value allowance, without requiring the full multisig signature for routine trades.
 - **User Control**: Large withdrawals and critical parameter changes still require the 2/3 human multisig sigs.
 
 ---

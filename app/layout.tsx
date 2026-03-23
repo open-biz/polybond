@@ -18,7 +18,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "PolyBond — The Yield Layer for Dispute Resolution",
   description:
-    "AI-powered dispute factoring yielding up to 492% APR. Stake USDC in delta-neutral prediction market arbitrage. Powered by UMA & Polymarket on Base.",
+    "AI-powered dispute factoring yielding up to 184% APR. Stake USDC in delta-neutral prediction market arbitrage. Powered by UMA & Polymarket on Base.",
   keywords: [
     "PolyBond",
     "yield",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     "Base",
   ],
   openGraph: {
-    title: "PolyBond — 492% APR Yield from Dispute Resolution",
+    title: "PolyBond — 184% APR Yield from Dispute Resolution",
     description:
       "AI dispute factoring on Polymarket. Delta-neutral yield, fully automated.",
     type: "website",

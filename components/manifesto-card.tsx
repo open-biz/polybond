@@ -21,13 +21,13 @@ export function ManifestoCard() {
                     <div className={styles.divider} />
                     <p className={styles.body}>
                         PolyBond fixes this. Our AI agent scans disputed markets, verifies ground truth,
-                        and offers winners an immediate exit at <strong>97¢ on the dollar</strong>. When
+                        and offers winners an immediate exit at <strong>99¢ on the dollar</strong>. When
                         the dispute resolves 2 days later, the vault collects the full $1.00.
                     </p>
                     <p className={styles.highlight}>
                         You provide the capital. We provide the yield.
                         <br />
-                        <strong>492% APR</strong> — delta-neutral, AI-managed, fully automated.
+                        <strong>184% APR</strong> — delta-neutral, AI-managed, fully automated.
                     </p>
                 </div>
             </div>

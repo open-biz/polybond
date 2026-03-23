@@ -11,22 +11,22 @@ export function HowItWorks() {
         },
         {
             number: "02",
-            title: "Buy at 97¢",
+            title: "Buy at a Discount",
             description:
-                "The vault purchases winning shares from frustrated traders at a 3% discount. Winners get instant liquidity instead of waiting 2–4 days for UMA to resolve the dispute.",
+                "The vault purchases winning shares from frustrated traders at a discount (e.g., 99¢). Winners get instant liquidity instead of waiting 2–4 days for UMA to resolve the dispute.",
             icon: "💰",
         },
         {
             number: "03",
             title: "Collect $1.00",
             description:
-                "When the dispute naturally resolves (as expected), the vault redeems each share for its full $1.00 value. The 3¢ spread is pure profit — annualizing to 492% APR.",
+                "When the dispute naturally resolves, the vault redeems each share for its full $1.00 value. The spread is pure profit — annualizing to 184% Base APR and 524% APY.",
             icon: "✨",
         },
     ];
 
     return (
-        <section className={styles.section}>
+        <section id="how-it-works" className={styles.section}>
             <div className={styles.container}>
                 <span className={styles.label}>How It Works</span>
                 <h2 className={styles.title}>Three steps to yield</h2>

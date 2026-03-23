@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Link from "next/link";
 import styles from "./bento-grid.module.css";
 
 interface BentoGridProps {
@@ -19,6 +20,7 @@ interface BentoCardProps {
     name: string;
     description: string;
     cta?: string;
+    href?: string;
     background?: ReactNode;
     className?: string;
     colSpan?: 1 | 2;
@@ -29,6 +31,7 @@ export function BentoCard({
     name,
     description,
     cta,
+    href,
     background,
     className = "",
     colSpan = 1,
@@ -45,12 +48,12 @@ export function BentoCard({
                 <h3 className={styles.name}>{name}</h3>
                 <p className={styles.description}>{description}</p>
                 {cta && (
-                    <span className={styles.cta}>
+                    <Link href={href || "#"} className={styles.cta}>
                         {cta}
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                    </span>
+                    </Link>
                 )}
             </div>
         </div>
