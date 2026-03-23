@@ -1,6 +1,26 @@
-# PolyBond: The Yield Layer for Dispute Resolution
+<div align="center">
+  <img src="./public/cover.png" alt="PolyBond Cover" width="100%" />
+
+  <h1>PolyBond: The Yield Layer for Dispute Resolution</h1>
+
+  <p>
+    <img src="https://img.shields.io/badge/Network-Base-0052FF?style=flat-square&logo=base&logoColor=white" alt="Base Network" />
+    <img src="https://img.shields.io/badge/Security-Gnosis_Safe-12FF80?style=flat-square&logo=safe&logoColor=black" alt="Gnosis Safe" />
+    <img src="https://img.shields.io/badge/Built_With-Next.js-000000?style=flat-square&logo=next.js&logoColor=white" alt="Next.js" />
+    <img src="https://img.shields.io/badge/Agent-MoonPay_CLI-7D00FF?style=flat-square" alt="MoonPay CLI" />
+    <img src="https://img.shields.io/badge/Hackathon-Synthesis-FF4500?style=flat-square" alt="Synthesis" />
+  </p>
+</div>
 
 PolyBond is an automated liquidity vault on Base designed to solve the "spite dispute" capital lockup in decentralized prediction markets like Polymarket. 
+
+## 📸 Screenshots
+
+<div align="center">
+  <img src="./public/bento.png" alt="Bento Features" width="48%" />
+  &nbsp;
+  <img src="./public/vault.png" alt="Vault Interface" width="48%" />
+</div>
 
 ## 🚀 The Hackathon Project
 
