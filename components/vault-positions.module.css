@@ -1,0 +1,140 @@
+.section {
+    margin-bottom: 32px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.title {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--foreground, #e8ede9);
+}
+
+.count {
+    font-size: 13px;
+    color: rgba(138, 155, 142, 0.5);
+}
+
+.tableWrap {
+    overflow-x: auto;
+    background: rgba(16, 26, 20, 0.5);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(124, 184, 124, 0.08);
+    border-radius: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(124, 184, 124, 0.15) transparent;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.table th {
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(138, 155, 142, 0.5);
+    border-bottom: 1px solid rgba(124, 184, 124, 0.06);
+}
+
+.row {
+    transition: background 0.2s ease;
+}
+
+.row:hover {
+    background: rgba(124, 184, 124, 0.03);
+}
+
+.row td {
+    padding: 14px 18px;
+    font-size: 14px;
+    color: rgba(232, 237, 233, 0.8);
+    border-bottom: 1px solid rgba(124, 184, 124, 0.04);
+}
+
+.row:last-child td {
+    border-bottom: none;
+}
+
+.marketCell {
+    max-width: 240px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mono {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.returnCell {
+    color: var(--success, #5dd87e) !important;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.status {
+    display: inline-flex;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.status_active {
+    background: rgba(124, 184, 124, 0.12);
+    color: var(--primary, #7cb87c);
+}
+
+.status_resolving {
+    background: rgba(201, 168, 76, 0.12);
+    color: var(--accent, #c9a84c);
+}
+
+.status_resolved {
+    background: rgba(93, 216, 126, 0.1);
+    color: var(--success, #5dd87e);
+}
+
+.progressWrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progressBar {
+    flex: 1;
+    height: 4px;
+    background: rgba(124, 184, 124, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    min-width: 60px;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-dark, #4a8a4a), var(--primary, #7cb87c));
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+
+.timeRemaining {
+    font-size: 11px;
+    color: rgba(138, 155, 142, 0.5);
+    white-space: nowrap;
+}

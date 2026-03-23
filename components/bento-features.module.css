@@ -1,0 +1,221 @@
+.section {
+    position: relative;
+    z-index: 10;
+    padding: 64px 24px 80px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--primary, #7cb87c);
+    margin-bottom: 12px;
+    opacity: 0.8;
+}
+
+.title {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--foreground, #e8ede9);
+    margin-bottom: 40px;
+}
+
+/* Dot pattern background */
+.dotPattern {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--primary, #7cb87c);
+    animation: dotPulse 3s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+
+    0%,
+    100% {
+        opacity: 0.1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(1.5);
+    }
+}
+
+/* Marquee wrap */
+.marqueeWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.marketChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: rgba(16, 26, 20, 0.8);
+    border: 1px solid rgba(124, 184, 124, 0.12);
+    border-radius: 10px;
+    white-space: nowrap;
+    font-size: 12px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    flex-shrink: 0;
+}
+
+.marketChip:hover {
+    border-color: rgba(124, 184, 124, 0.3);
+    background: rgba(16, 26, 20, 0.95);
+}
+
+.marketStatus {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: rgba(124, 184, 124, 0.12);
+    color: var(--primary, #7cb87c);
+}
+
+.marketName {
+    color: rgba(232, 237, 233, 0.7);
+    font-size: 13px;
+}
+
+.marketPrice {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--primary, #7cb87c);
+    font-size: 13px;
+}
+
+/* Yield beam */
+.beamContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 16px;
+    padding: 24px;
+}
+
+.beamNodes {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.beamNode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(124, 184, 124, 0.1);
+    border: 1px solid rgba(124, 184, 124, 0.2);
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--foreground, #e8ede9);
+}
+
+.beamNodeCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(124, 184, 124, 0.15), rgba(201, 168, 76, 0.1));
+    border: 1px solid rgba(124, 184, 124, 0.3);
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary, #7cb87c);
+    box-shadow: 0 0 30px rgba(124, 184, 124, 0.1);
+}
+
+.beamLine {
+    width: 180px;
+    height: 2px;
+    background: rgba(124, 184, 124, 0.1);
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.beamPulse {
+    position: absolute;
+    top: 0;
+    left: -30%;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--primary, #7cb87c), transparent);
+    animation: beamMove 2s ease-in-out infinite;
+}
+
+@keyframes beamMove {
+    0% {
+        left: -30%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* Shield rings */
+.shieldBg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    position: relative;
+}
+
+.shieldRing {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid rgba(124, 184, 124, 0.15);
+    animation: ringPulse 3s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 0.1;
+    }
+}

@@ -1,0 +1,109 @@
+.section {
+    position: relative;
+    z-index: 10;
+    padding: 64px 24px 80px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--primary, #7cb87c);
+    margin-bottom: 12px;
+    opacity: 0.8;
+}
+
+.title {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--foreground, #e8ede9);
+    margin-bottom: 48px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.step {
+    position: relative;
+    padding: 32px 24px;
+    background: rgba(16, 26, 20, 0.6);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(124, 184, 124, 0.1);
+    border-radius: 16px;
+    text-align: left;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step:hover {
+    border-color: rgba(124, 184, 124, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(124, 184, 124, 0.06);
+}
+
+.stepHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.icon {
+    font-size: 28px;
+}
+
+.number {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 600;
+    color: rgba(124, 184, 124, 0.15);
+    line-height: 1;
+}
+
+.stepTitle {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--foreground, #e8ede9);
+    margin-bottom: 12px;
+}
+
+.stepDesc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(232, 237, 233, 0.6);
+}
+
+.connector {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .title {
+        font-size: 26px;
+    }
+
+    .connector {
+        display: flex;
+        justify-content: center;
+        padding-top: 16px;
+        color: var(--primary, #7cb87c);
+        opacity: 0.3;
+    }
+}

@@ -1,0 +1,62 @@
+import { DotMatrixBackground } from "@/components/dot-matrix-background";
+import { VaultPortfolio } from "@/components/vault-portfolio";
+import { VaultPositions } from "@/components/vault-positions";
+import { VaultActions } from "@/components/vault-actions";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import styles from "./vault.module.css";
+
+export const metadata = {
+    title: "PolyBond Vault — Manage Your Yield",
+    description:
+        "Deposit, withdraw, and monitor your yield from AI-powered dispute resolution on Polymarket.",
+};
+
+export default function VaultPage() {
+    return (
+        <main className={styles.main}>
+            <DotMatrixBackground />
+
+            {/* Header */}
+            <header className={styles.header}>
+                <div className={styles.headerInner}>
+                    <div className={styles.headerLeft}>
+                        <Link href="/" className={styles.backLink}>
+                            <ArrowLeft size={16} />
+                            <span>Back</span>
+                        </Link>
+                        <div className={styles.logo}>
+                            <svg
+                                viewBox="0 0 24 24"
+                                className={styles.logoIcon}
+                                fill="currentColor"
+                            >
+                                <path d="M12 2L8 6H4v4l-4 4 4 4v4h4l4 4 4-4h4v-4l4-4-4-4V6h-4L12 2zm0 4a6 6 0 110 12 6 6 0 010-12z" />
+                            </svg>
+                            <span className={styles.logoText}>PolyBond Vault</span>
+                        </div>
+                    </div>
+                    <div className={styles.headerRight}>
+                        <span className={styles.network}>Base Network</span>
+                        <div className={styles.pulse} />
+                    </div>
+                </div>
+            </header>
+
+            {/* Content */}
+            <div className={styles.content}>
+                <VaultPortfolio />
+                <VaultActions />
+                <VaultPositions />
+            </div>
+
+            {/* Footer */}
+            <footer className={styles.footer}>
+                <p>
+                    Vault powered by Gnosis Safe • All funds are held in a multi-sig
+                    smart contract on Base
+                </p>
+            </footer>
+        </main>
+    );
+}

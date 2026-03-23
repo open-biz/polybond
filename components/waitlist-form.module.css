@@ -1,0 +1,138 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.inputGroup {
+    display: flex;
+    gap: 0;
+    max-width: 460px;
+    width: 100%;
+    background: rgba(16, 26, 20, 0.7);
+    border: 1px solid rgba(124, 184, 124, 0.12);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.inputGroup:focus-within {
+    border-color: var(--primary, #7cb87c);
+    box-shadow: 0 0 0 3px rgba(124, 184, 124, 0.1);
+}
+
+.input {
+    flex: 1;
+    padding: 16px 20px;
+    background: transparent;
+    border: none;
+    color: var(--foreground, #e8ede9);
+    font-size: 15px;
+    font-family: var(--font-sans);
+    outline: none;
+    min-width: 0;
+}
+
+.input::placeholder {
+    color: rgba(138, 155, 142, 0.6);
+}
+
+.button {
+    padding: 16px 28px;
+    background: linear-gradient(135deg, var(--primary-dark, #4a8a4a), var(--primary, #7cb87c));
+    color: #0a0f0d;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: var(--font-sans);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+.button:hover {
+    background: linear-gradient(135deg, var(--primary, #7cb87c), var(--primary-light, #a3d4a3));
+}
+
+.button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.hint {
+    font-size: 12px;
+    color: rgba(138, 155, 142, 0.5);
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(10, 15, 13, 0.3);
+    border-top-color: #0a0f0d;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Success state */
+.success {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 32px;
+    background: rgba(93, 216, 126, 0.08);
+    border: 1px solid rgba(93, 216, 126, 0.2);
+    border-radius: 14px;
+    animation: fadeIn 0.4s ease;
+}
+
+.successIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--success, #5dd87e);
+    color: #0a0f0d;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.successText {
+    font-size: 15px;
+    color: var(--success, #5dd87e);
+    font-weight: 500;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 480px) {
+    .inputGroup {
+        flex-direction: column;
+        border-radius: 14px;
+    }
+
+    .button {
+        border-radius: 0 0 13px 13px;
+    }
+}

@@ -1,0 +1,296 @@
+.main {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ===== Header ===== */
+
+.header {
+  position: relative;
+  z-index: 10;
+  padding: 24px 24px 16px;
+}
+
+.headerInner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(232, 237, 233, 0.8);
+}
+
+.logoIcon {
+  width: 22px;
+  height: 22px;
+  color: var(--primary, #7cb87c);
+}
+
+.logoText {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  letter-spacing: 0.02em;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.network {
+  font-size: 12px;
+  color: rgba(138, 155, 142, 0.6);
+}
+
+.pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary, #7cb87c);
+  animation: headerPulse 2s ease-in-out infinite;
+}
+
+@keyframes headerPulse {
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ===== Hero ===== */
+
+.hero {
+  position: relative;
+  z-index: 10;
+  padding: 48px 24px 64px;
+  text-align: center;
+}
+
+.heroTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 6vw, 60px);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--foreground, #e8ede9);
+  max-width: 720px;
+  margin: 0 auto;
+  text-wrap: balance;
+}
+
+.heroSub {
+  margin-top: 24px;
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: rgba(138, 155, 142, 0.7);
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: pretty;
+  line-height: 1.6;
+}
+
+.heroForm {
+  margin-top: 36px;
+}
+
+.heroPowered {
+  margin-top: 20px;
+  font-size: 13px;
+  color: rgba(138, 155, 142, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.poweredDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(124, 184, 124, 0.5);
+}
+
+/* ===== Sections ===== */
+
+.section {
+  position: relative;
+  z-index: 10;
+  padding: 64px 24px 80px;
+}
+
+.sectionTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 600;
+  text-align: center;
+  color: var(--foreground, #e8ede9);
+  margin-bottom: 48px;
+}
+
+/* ===== Risk Section ===== */
+
+.riskSection {
+  position: relative;
+  z-index: 10;
+  padding: 64px 24px;
+}
+
+.riskContainer {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.riskGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.riskCard {
+  text-align: center;
+  padding: 32px 24px;
+  background: rgba(16, 26, 20, 0.5);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(124, 184, 124, 0.08);
+  border-radius: 16px;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.riskCard:hover {
+  border-color: rgba(124, 184, 124, 0.2);
+  transform: translateY(-3px);
+}
+
+.riskIconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(124, 184, 124, 0.08);
+  margin-bottom: 16px;
+}
+
+.riskIcon {
+  width: 22px;
+  height: 22px;
+  color: var(--primary, #7cb87c);
+}
+
+.riskValue {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary, #7cb87c);
+  margin-bottom: 4px;
+}
+
+.riskLabel {
+  font-size: 13px;
+  color: rgba(138, 155, 142, 0.6);
+  margin-bottom: 12px;
+}
+
+.riskDesc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(232, 237, 233, 0.6);
+}
+
+/* ===== CTA Section ===== */
+
+.ctaSection {
+  position: relative;
+  z-index: 10;
+  padding: 80px 24px 100px;
+  text-align: center;
+}
+
+.ctaTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 600;
+  color: var(--foreground, #e8ede9);
+  margin-bottom: 16px;
+}
+
+.ctaSub {
+  font-size: 15px;
+  color: rgba(138, 155, 142, 0.6);
+  max-width: 440px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+/* ===== Footer ===== */
+
+.footer {
+  position: relative;
+  z-index: 10;
+  padding: 32px 24px;
+  border-top: 1px solid rgba(124, 184, 124, 0.06);
+}
+
+.footerInner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(232, 237, 233, 0.5);
+}
+
+.footerLogoIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--primary, #7cb87c);
+}
+
+.footerText {
+  font-size: 13px;
+  color: rgba(138, 155, 142, 0.4);
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 768px) {
+  .riskGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .network {
+    display: none;
+  }
+
+  .footerInner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero {
+    padding: 32px 24px 48px;
+  }
+}

@@ -1,0 +1,26 @@
+.marquee {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.track {
+    display: flex;
+    gap: 16px;
+    width: max-content;
+    animation: scroll var(--marquee-duration, 30s) linear infinite;
+}
+
+.pauseOnHover:hover .track {
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
