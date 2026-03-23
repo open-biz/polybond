@@ -40,19 +40,14 @@ To achieve both user sovereignty and AI-pooled automation, PolyBond uses **Gnosi
 - **Repo:** [https://github.com/open-biz/polybond](https://github.com/open-biz/polybond)
 - **Video Demo:** [Watch Here](https://go.diginomad.xyz/polybond-demo)
 
-### 🎯 Hackathon Tracks & Integrations
-1. **MoonPay CLI Agents**: PolyBond's primary **Discovery Layer**. The agent uses MoonPay CLI's `polymarket` skills to scan UMA disputes and `swap/bridge` skills to manage vault liquidity across Base.
-2. **Octant (Octant Mechanism Design)**: Commitment to public goods. **10% of the vault's management fees** are automatically streamed to Octant to fund ecosystem-wide market efficiency research.
-3. **Ship Something Real with OpenServ**: PolyBond is registered as an **OpenServ Agent Service**, allowing other autonomous agents to "hire" PolyBond to exit their prediction market positions instantly during disputes.
-4. **Autonomous Trading Agent**: AI-managed delta-neutral bonding strategy (Buy at 97¢, resolve at 100¢).
-5. **Agents With Receipts (ERC-8004)**: Every trade and identity verification is recorded via on-chain receipts on Base.
-
 ### 🤖 Agent Metadata
 - **AI Model:** `grok-4.20-beta1`
-- **Agent Harness:** `guv-code`
-- **Harness Other:** `guv-code`
+- **Agent Harness:** `openclaw` (Local execution)
 - **Framework:** Next.js 16.2.0 with custom agentic architecture
 - **Identity (ERC-8004):** [Basescan Transaction](https://basescan.org/tx/0xb7714e6d3fb1ce5fb7fad3e1fec4a8e3048e748041fab074f0cabee5d4cbc142)
+
+### 🎯 Hackathon Tracks & Integrations
+1. **MoonPay CLI Agents**: PolyBond's primary **Discovery Layer**. The agent uses MoonPay CLI's **Polymarket MCP** skills to scan UMA disputes and its `swap/bridge` skills to manage vault liquidity across Base.
 
 ---
 
