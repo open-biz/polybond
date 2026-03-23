@@ -1,10 +1,11 @@
+import Link from "next/link"
 import { DotMatrixBackground } from "@/components/dot-matrix-background"
 import { ManifestoCard } from "@/components/manifesto-card"
 import { HowItWorks } from "@/components/how-it-works"
-import { WaitlistForm } from "@/components/waitlist-form"
 import { DisputedMarkets } from "@/components/disputed-markets"
 import { VaultDashboard } from "@/components/vault-dashboard"
 import { BentoFeatures } from "@/components/bento-features"
+import { SafeWalletConnector } from "@/components/safe-wallet-connector"
 import { Shield, Lock, TrendingUp } from "lucide-react"
 import styles from "./page.module.css"
 
@@ -26,9 +27,11 @@ export default function Home() {
             </svg>
             <span className={styles.logoText}>PolyBond</span>
           </div>
-          <div className={styles.headerRight}>
+          <div className={styles.headerRight} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <SafeWalletConnector />
             <span className={styles.network}>Base Network</span>
             <div className={styles.pulse} />
+            <Link href="/vault" className={styles.navVaultBtn}>Open Vault</Link>
           </div>
         </div>
       </header>
@@ -46,7 +49,7 @@ export default function Home() {
         </p>
 
         <div className={styles.heroForm}>
-          <WaitlistForm />
+          <Link href="/vault" className={styles.primaryAction}>Open Vault</Link>
         </div>
 
         <p className={styles.heroPowered}>
@@ -115,10 +118,10 @@ export default function Home() {
       <section className={styles.ctaSection}>
         <h2 className={styles.ctaTitle}>Ready to earn yield?</h2>
         <p className={styles.ctaSub}>
-          Join the waitlist for early access to the PolyBond vault. No prediction
+          Enter the PolyBond vault to start earning delta-neutral yield today. No prediction
           market experience required.
         </p>
-        <WaitlistForm />
+        <Link href="/vault" className={styles.primaryAction}>Open Vault</Link>
       </section>
 
       {/* Footer */}

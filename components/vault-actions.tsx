@@ -2,22 +2,159 @@
 
 import { useState } from "react";
 import { ArrowDown, ArrowUp, Shield, ExternalLink } from "lucide-react";
+import { parseUnits, encodeFunctionData } from "viem";
+import { useAccount } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import Safe from "@safe-global/protocol-kit";
+import { useSafe } from "./safe-context";
+import { USDC_ADDRESS, POLYBOND_STRATEGY_ADDRESS } from "@/config/contracts";
+import { ERC20_ABI, POLYBOND_POOL_ABI } from "@/config/abi";
 import styles from "./vault-actions.module.css";
 
 export function VaultActions() {
+    const { address, connector } = useAccount();
+    const { openConnectModal } = useConnectModal();
+    const { safeAddress } = useSafe();
     const [depositAmount, setDepositAmount] = useState("");
     const [withdrawAmount, setWithdrawAmount] = useState("");
     const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
+    const [isPending, setIsPending] = useState(false);
 
-    const handleDeposit = (e: React.FormEvent) => {
+    const handleDeposit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulated — would connect to Gnosis Safe
-        alert(`Deposit of $${depositAmount} USDC initiated via Gnosis Safe`);
+        
+        if (!address || !safeAddress || !connector) {
+            alert("Please connect your wallet and create a Safe Vault first.");
+            return;
+        }
+
+        if (!depositAmount || isNaN(Number(depositAmount))) return;
+
+        try {
+            setIsPending(true);
+            const provider = await connector.getProvider();
+            
+            const safeProtocolKit = await Safe.init({
+                provider: provider as any,
+                signer: address,
+                safeAddress
+            });
+
+            // Transaction 1: Approve the PolyBond Pool to spend USDC
+            const approveData = encodeFunctionData({
+                abi: ERC20_ABI,
+                functionName: 'approve',
+                args: [POLYBOND_STRATEGY_ADDRESS as `0x${string}`, parseUnits(depositAmount, 6)]
+            });
+
+            // Transaction 2: Deposit USDC into the PolyBond Pool
+            const depositData = encodeFunctionData({
+                abi: POLYBOND_POOL_ABI,
+                functionName: 'deposit',
+                args: [parseUnits(depositAmount, 6)]
+            });
+
+            const safeTransactionData = [
+                {
+                    to: USDC_ADDRESS,
+                    data: approveData,
+                    value: "0"
+                },
+                {
+                    to: POLYBOND_STRATEGY_ADDRESS,
+                    data: depositData,
+                    value: "0"
+                }
+            ];
+
+            const safeTransaction = await safeProtocolKit.createTransaction({ transactions: safeTransactionData });
+            
+            // Execute the transaction directly from the 1/1 Safe
+            const txResponse = await safeProtocolKit.executeTransaction(safeTransaction);
+            await txResponse.transactionResponse?.wait();
+
+            alert(`Successfully deposited $${depositAmount} USDC into the PolyBond Pool!`);
+            setDepositAmount("");
+
+        } catch (error) {
+            console.error("Deposit error:", error);
+            alert("Deposit failed. Check console. Make sure your Safe has enough USDC and ETH for gas.");
+        } finally {
+            setIsPending(false);
+        }
     };
 
-    const handleWithdraw = (e: React.FormEvent) => {
+    const handleWithdraw = async (e: React.FormEvent) => {
         e.preventDefault();
-        alert(`Withdrawal of $${withdrawAmount} USDC queued in Gnosis Safe`);
+        
+        if (!address || !safeAddress || !connector) {
+            alert("Please connect your wallet and create a Safe Vault first.");
+            return;
+        }
+
+        if (!withdrawAmount || isNaN(Number(withdrawAmount))) return;
+
+        try {
+            setIsPending(true);
+            const provider = await connector.getProvider();
+            
+            const safeProtocolKit = await Safe.init({
+                provider: provider as any,
+                signer: address,
+                safeAddress
+            });
+
+            const withdrawData = encodeFunctionData({
+                abi: POLYBOND_POOL_ABI,
+                functionName: 'withdraw',
+                args: [parseUnits(withdrawAmount, 6)] // Assuming 1 share = 1 USDC initially
+            });
+
+            const safeTransactionData = [{
+                to: POLYBOND_STRATEGY_ADDRESS,
+                data: withdrawData,
+                value: "0"
+            }];
+
+            const safeTransaction = await safeProtocolKit.createTransaction({ transactions: safeTransactionData });
+            const txResponse = await safeProtocolKit.executeTransaction(safeTransaction);
+            await txResponse.transactionResponse?.wait();
+
+            alert(`Successfully withdrew shares from the PolyBond Pool!`);
+            setWithdrawAmount("");
+
+        } catch (error) {
+            console.error("Withdraw error:", error);
+            alert("Withdraw failed. See console for details.");
+        } finally {
+            setIsPending(false);
+        }
+    };
+
+    const renderActionButton = (actionType: "deposit" | "withdraw") => {
+        if (!address) {
+            return (
+                <button
+                    type="button"
+                    className={styles.actionBtn}
+                    onClick={() => openConnectModal?.()}
+                >
+                    Connect Wallet
+                </button>
+            );
+        }
+        if (!safeAddress) {
+            return (
+                <button type="button" className={styles.actionBtn} disabled>
+                    Setup Vault First
+                </button>
+            );
+        }
+        return (
+            <button type="submit" className={styles.actionBtn} disabled={isPending}>
+                {isPending ? "Executing..." : actionType === "deposit" ? "Deposit to Vault" : "Withdraw from Vault"}
+            </button>
+        );
     };
 
     return (
@@ -59,7 +196,7 @@ export function VaultActions() {
                                     <button
                                         type="button"
                                         className={styles.maxBtn}
-                                        onClick={() => setDepositAmount("10000")}
+                                        onClick={() => setDepositAmount("0")}
                                     >
                                         MAX
                                     </button>
@@ -67,22 +204,20 @@ export function VaultActions() {
                             </div>
                             <div className={styles.infoRow}>
                                 <span>Current APR</span>
-                                <span className={styles.infoValue}>492%</span>
+                                <span className={styles.infoValue}>0%</span>
                             </div>
                             <div className={styles.infoRow}>
                                 <span>Estimated daily yield</span>
                                 <span className={styles.infoValue}>
-                                    ${depositAmount ? (parseFloat(depositAmount) * 0.0135).toFixed(2) : "0.00"}
+                                    $0.00
                                 </span>
                             </div>
-                            <button type="submit" className={styles.actionBtn}>
-                                Deposit to Vault
-                            </button>
+                            {renderActionButton("deposit")}
                         </form>
                     ) : (
                         <form onSubmit={handleWithdraw} className={styles.form}>
                             <div className={styles.inputGroup}>
-                                <label className={styles.inputLabel}>Amount (USDC)</label>
+                                <label className={styles.inputLabel}>Amount (Shares)</label>
                                 <div className={styles.inputWrap}>
                                     <input
                                         type="number"
@@ -96,23 +231,21 @@ export function VaultActions() {
                                     <button
                                         type="button"
                                         className={styles.maxBtn}
-                                        onClick={() => setWithdrawAmount("25000")}
+                                        onClick={() => setWithdrawAmount("0")}
                                     >
                                         MAX
                                     </button>
                                 </div>
                             </div>
                             <div className={styles.infoRow}>
-                                <span>Available balance</span>
-                                <span className={styles.infoValue}>$25,000.00</span>
+                                <span>Available shares</span>
+                                <span className={styles.infoValue}>0.00</span>
                             </div>
                             <div className={styles.infoRow}>
                                 <span>Withdrawal fee</span>
                                 <span className={styles.infoValue}>0.3%</span>
                             </div>
-                            <button type="submit" className={styles.actionBtn}>
-                                Withdraw from Vault
-                            </button>
+                            {renderActionButton("withdraw")}
                         </form>
                     )}
                 </div>
@@ -128,17 +261,15 @@ export function VaultActions() {
                         <div className={styles.safeRow}>
                             <span className={styles.safeLabel}>Safe Address</span>
                             <div className={styles.safeAddress}>
-                                <span className={styles.mono}>0x742d...4e3B</span>
-                                <ExternalLink size={12} className={styles.linkIcon} />
+                                <span className={styles.mono}>
+                                    {safeAddress ? `${safeAddress.slice(0, 6)}...${safeAddress.slice(-4)}` : "Not Created"}
+                                </span>
+                                {safeAddress && <ExternalLink size={12} className={styles.linkIcon} />}
                             </div>
                         </div>
                         <div className={styles.safeRow}>
                             <span className={styles.safeLabel}>Signers</span>
-                            <span className={styles.safeValue}>2 of 3</span>
-                        </div>
-                        <div className={styles.safeRow}>
-                            <span className={styles.safeLabel}>Vault Balance</span>
-                            <span className={styles.safeValue}>$142,850 USDC</span>
+                            <span className={styles.safeValue}>{safeAddress ? "1 of 1" : "N/A"}</span>
                         </div>
                         <div className={styles.safeRow}>
                             <span className={styles.safeLabel}>Network</span>
@@ -149,21 +280,15 @@ export function VaultActions() {
                         </div>
                     </div>
 
-                    <div className={styles.txQueue}>
-                        <h4 className={styles.txQueueTitle}>Transaction Queue</h4>
-                        <div className={styles.txItem}>
-                            <span className={styles.txLabel}>Bond: Fed Rate Cut</span>
-                            <span className={styles.txPending}>Pending (1/2 sigs)</span>
+                    {safeAddress && (
+                        <div className={styles.txQueue}>
+                            <h4 className={styles.txQueueTitle}>Status</h4>
+                            <div className={styles.txItem}>
+                                <span className={styles.txLabel}>Safe Account</span>
+                                <span className={styles.txConfirmed}>Active</span>
+                            </div>
                         </div>
-                        <div className={styles.txItem}>
-                            <span className={styles.txLabel}>Yield Claim: SpaceX</span>
-                            <span className={styles.txConfirmed}>Executed</span>
-                        </div>
-                        <div className={styles.txItem}>
-                            <span className={styles.txLabel}>Bond: BTC $150K</span>
-                            <span className={styles.txPending}>Pending (1/2 sigs)</span>
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </section>
