@@ -17,7 +17,7 @@ function DotPatternBG() {
                         left: `${(i % 12) * 9}%`,
                         top: `${Math.floor(i / 12) * 10}%`,
                         animationDelay: `${(i * 0.05) % 2}s`,
-                        opacity: 0.15 + Math.random() * 0.25,
+                        opacity: 0.15 + ((i * 13) % 25) / 100, // Deterministic pseudo-random opacity
                     }}
                 />
             ))}
@@ -53,6 +53,7 @@ export function BentoFeatures() {
                 const data = await response.json();
                 // Map the data to the format expected by the marquee
                 const mapped = data.map((m: any) => ({
+                    id: m.id || m.question.replace(/\s+/g, '-').toLowerCase(),
                     name: m.question,
                     price: m.lockInPrice,
                     status: m.status.charAt(0).toUpperCase() + m.status.slice(1)
@@ -94,20 +95,34 @@ export function BentoFeatures() {
                                     <>
                                         <Marquee speed={25} pauseOnHover>
                                             {markets.map((m, i) => (
-                                                <div key={i} className={styles.marketChip}>
+                                                <a 
+                                                    key={i} 
+                                                    href={`https://polymarket.com/event/${m.id}`} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer" 
+                                                    className={styles.marketChip}
+                                                    style={{ textDecoration: 'none' }}
+                                                >
                                                     <span className={styles.marketStatus}>{m.status}</span>
                                                     <span className={styles.marketName}>{m.name}</span>
                                                     <span className={styles.marketPrice}>{m.price}</span>
-                                                </div>
+                                                </a>
                                             ))}
                                         </Marquee>
                                         <Marquee speed={35} pauseOnHover direction="right">
                                             {markets.slice().reverse().map((m, i) => (
-                                                <div key={i} className={styles.marketChip}>
+                                                <a 
+                                                    key={i} 
+                                                    href={`https://polymarket.com/event/${m.id}`} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer" 
+                                                    className={styles.marketChip}
+                                                    style={{ textDecoration: 'none' }}
+                                                >
                                                     <span className={styles.marketStatus}>{m.status}</span>
                                                     <span className={styles.marketName}>{m.name}</span>
                                                     <span className={styles.marketPrice}>{m.price}</span>
-                                                </div>
+                                                </a>
                                             ))}
                                         </Marquee>
                                     </>
