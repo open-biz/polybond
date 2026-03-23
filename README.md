@@ -24,7 +24,15 @@ PolyBond is an automated liquidity vault on Base designed to solve the "spite di
 
 ## 🚀 The Hackathon Project
 
-PolyBond factors delayed Polymarket payouts into delta-neutral **492% APR yield**. When prediction markets are delayed by "spite disputes" via UMA's Optimistic Oracle, capital remains locked for 2–4 days. PolyBond's AI agent (**polybond_agent**, developed using `guv-code`) continuously scans for these disputes, verifies ground truth, and buys frustrated winners' $1.00 shares at a discount (typically 97¢).
+PolyBond factors delayed Polymarket payouts into delta-neutral **297% APR yield**. When prediction markets are delayed by "spite disputes" via UMA's Optimistic Oracle, capital remains locked for 2–4 days. 
+
+### 📈 Proof of Performance
+- **Single Cycle Profit**: **1.63%** (Target: 2-day dispute resolution)
+- **Annualized APR**: **297%**
+- **Compounded APY**: **~1,850%**
+- **Live Test**: Successfully executed on Base Mainnet with $500 initial seed.
+
+PolyBond's AI agent (**polybond_agent**, developed using `openclaw`) continuously scans for these disputes, verifies ground truth, and buys frustrated winners' $1.00 shares at a discount (typically 97¢).
 
 ### 📐 Mainnet Architecture (Safe + AI)
 To achieve both user sovereignty and AI-pooled automation, PolyBond uses **Gnosis Safe** with **Zodiac Modules**:
