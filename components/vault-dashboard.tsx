@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { TVLCard } from "./tvl-card";
+import Link from "next/link";
 import styles from "./vault-dashboard.module.css";
 
 function AnimatedStat({
@@ -57,14 +58,14 @@ export function VaultDashboard() {
                     {/* Stats Row */}
                     <div className={styles.statsRow}>
                         <AnimatedStat
-                            value={492}
+                            value={0}
                             suffix="% APR"
                             label="Base Yield"
                             delay={200}
                         />
                         <div className={styles.divider} />
                         <AnimatedStat
-                            value={12854}
+                            value={0}
                             suffix="% APY"
                             label="Compounded"
                             delay={500}
@@ -91,13 +92,13 @@ export function VaultDashboard() {
 
                     {/* CTA */}
                     <div className={styles.cta}>
-                        <button
+                        <Link
+                            href="/vault"
                             className={styles.ctaButton}
-                            onClick={() => { }}
                         >
-                            <span>Connect Wallet</span>
+                            <span>Open Vault</span>
                             <ArrowRight size={18} />
-                        </button>
+                        </Link>
                         <p className={styles.ctaSub}>
                             Deposit USDC to start earning yield
                         </p>

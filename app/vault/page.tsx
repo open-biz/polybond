@@ -1,7 +1,6 @@
 import { DotMatrixBackground } from "@/components/dot-matrix-background";
-import { VaultPortfolio } from "@/components/vault-portfolio";
-import { VaultPositions } from "@/components/vault-positions";
-import { VaultActions } from "@/components/vault-actions";
+import { VaultContent } from "@/components/vault-content";
+import { SafeWalletConnector } from "@/components/safe-wallet-connector";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import styles from "./vault.module.css";
@@ -36,7 +35,8 @@ export default function VaultPage() {
                             <span className={styles.logoText}>PolyBond Vault</span>
                         </div>
                     </div>
-                    <div className={styles.headerRight}>
+                    <div className={styles.headerRight} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <SafeWalletConnector />
                         <span className={styles.network}>Base Network</span>
                         <div className={styles.pulse} />
                     </div>
@@ -45,9 +45,7 @@ export default function VaultPage() {
 
             {/* Content */}
             <div className={styles.content}>
-                <VaultPortfolio />
-                <VaultActions />
-                <VaultPositions />
+                <VaultContent />
             </div>
 
             {/* Footer */}

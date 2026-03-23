@@ -5,16 +5,7 @@ import { BentoGrid, BentoCard } from "./bento-grid";
 import { Marquee } from "./marquee";
 import styles from "./bento-features.module.css";
 
-const DISPUTED_MARKETS = [
-    { name: "Fed Rate Cut March?", price: "$0.97", status: "Bonding" },
-    { name: "BTC $150K by Q1?", price: "$0.97", status: "Bonding" },
-    { name: "SpaceX Orbit?", price: "$0.97", status: "Resolved" },
-    { name: "EU Digital Act?", price: "$0.97", status: "Monitoring" },
-    { name: "Oscar Best Picture?", price: "$0.97", status: "Bonding" },
-    { name: "ETH Merge PoS?", price: "$0.97", status: "Resolved" },
-    { name: "Celtics Repeat?", price: "$0.97", status: "Bonding" },
-    { name: "GPT-5 Release?", price: "$0.97", status: "Monitoring" },
-];
+const DISPUTED_MARKETS: any[] = [];
 
 function DotPatternBG() {
     return (
@@ -72,36 +63,44 @@ export function BentoFeatures() {
                     <BentoCard
                         icon={<Zap size={18} />}
                         name="Live Bonding Feed"
-                        description="Watch the AI agent buy winning shares at 97¢ across disputed markets."
+                        description="Watch the AI agent buy winning shares at a discount across disputed markets."
                         cta="View feed"
                         colSpan={2}
                         background={
                             <div className={styles.marqueeWrap}>
-                                <Marquee speed={25} pauseOnHover>
-                                    {DISPUTED_MARKETS.map((m, i) => (
-                                        <div key={i} className={styles.marketChip}>
-                                            <span className={styles.marketStatus}>{m.status}</span>
-                                            <span className={styles.marketName}>{m.name}</span>
-                                            <span className={styles.marketPrice}>{m.price}</span>
-                                        </div>
-                                    ))}
-                                </Marquee>
-                                <Marquee speed={35} pauseOnHover direction="right">
-                                    {DISPUTED_MARKETS.slice().reverse().map((m, i) => (
-                                        <div key={i} className={styles.marketChip}>
-                                            <span className={styles.marketStatus}>{m.status}</span>
-                                            <span className={styles.marketName}>{m.name}</span>
-                                            <span className={styles.marketPrice}>{m.price}</span>
-                                        </div>
-                                    ))}
-                                </Marquee>
+                                {DISPUTED_MARKETS.length > 0 ? (
+                                    <>
+                                        <Marquee speed={25} pauseOnHover>
+                                            {DISPUTED_MARKETS.map((m, i) => (
+                                                <div key={i} className={styles.marketChip}>
+                                                    <span className={styles.marketStatus}>{m.status}</span>
+                                                    <span className={styles.marketName}>{m.name}</span>
+                                                    <span className={styles.marketPrice}>{m.price}</span>
+                                                </div>
+                                            ))}
+                                        </Marquee>
+                                        <Marquee speed={35} pauseOnHover direction="right">
+                                            {DISPUTED_MARKETS.slice().reverse().map((m, i) => (
+                                                <div key={i} className={styles.marketChip}>
+                                                    <span className={styles.marketStatus}>{m.status}</span>
+                                                    <span className={styles.marketName}>{m.name}</span>
+                                                    <span className={styles.marketPrice}>{m.price}</span>
+                                                </div>
+                                            ))}
+                                        </Marquee>
+                                    </>
+                                ) : (
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'rgba(124, 184, 124, 0.2)', fontSize: '14px' }}>
+                                        Scanning Polymarket...
+                                    </div>
+                                )}
                             </div>
                         }
                     />
                     <BentoCard
                         icon={<BarChart3 size={18} />}
                         name="Yield Engine"
-                        description="Buy at 97¢, resolve at $1.00. The 3¢ spread compounds to 492% APR across 182 cycles."
+                        description="Buy at a discount, resolve at $1.00. High-frequency spread harvesting across multiple market cycles."
                         cta="View math"
                         colSpan={2}
                         background={<YieldBeam />}

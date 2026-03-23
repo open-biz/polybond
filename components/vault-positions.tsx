@@ -13,58 +13,7 @@ interface Position {
     progress: number;
 }
 
-const MOCK_POSITIONS: Position[] = [
-    {
-        id: "1",
-        market: "Will the Fed cut rates in March 2026?",
-        entryPrice: "$0.970",
-        currentValue: "$0.970",
-        expectedReturn: "+3.09%",
-        status: "active",
-        timeRemaining: "1d 14h",
-        progress: 30,
-    },
-    {
-        id: "2",
-        market: "Will Bitcoin hit $150K by Q1 2026?",
-        entryPrice: "$0.970",
-        currentValue: "$0.985",
-        expectedReturn: "+3.09%",
-        status: "resolving",
-        timeRemaining: "6h 22m",
-        progress: 75,
-    },
-    {
-        id: "3",
-        market: "Will SpaceX Starship reach orbit?",
-        entryPrice: "$0.970",
-        currentValue: "$1.000",
-        expectedReturn: "+3.09%",
-        status: "resolved",
-        timeRemaining: "Complete",
-        progress: 100,
-    },
-    {
-        id: "4",
-        market: "Oscar Best Picture: 'The Brutalist'?",
-        entryPrice: "$0.970",
-        currentValue: "$0.970",
-        expectedReturn: "+3.09%",
-        status: "active",
-        timeRemaining: "1d 22h",
-        progress: 15,
-    },
-    {
-        id: "5",
-        market: "NBA Finals: Will Celtics repeat?",
-        entryPrice: "$0.970",
-        currentValue: "$0.975",
-        expectedReturn: "+3.09%",
-        status: "active",
-        timeRemaining: "1d 8h",
-        progress: 40,
-    },
-];
+const MOCK_POSITIONS: Position[] = [];
 
 const STATUS_LABELS: Record<string, string> = {
     active: "Active",
@@ -93,7 +42,7 @@ export function VaultPositions() {
                         </tr>
                     </thead>
                     <tbody>
-                        {MOCK_POSITIONS.map((pos) => (
+                        {MOCK_POSITIONS.length > 0 ? MOCK_POSITIONS.map((pos) => (
                             <tr key={pos.id} className={styles.row}>
                                 <td className={styles.marketCell}>{pos.market}</td>
                                 <td className={styles.mono}>{pos.entryPrice}</td>
@@ -116,7 +65,13 @@ export function VaultPositions() {
                                     </div>
                                 </td>
                             </tr>
-                        ))}
+                        )) : (
+                            <tr>
+                                <td colSpan={6} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
+                                    No active positions yet. Deposit USDC to start earning yield.
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>

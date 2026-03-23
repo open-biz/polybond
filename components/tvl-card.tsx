@@ -5,24 +5,11 @@ import styles from "./tvl-card.module.css";
 
 export function TVLCard() {
     const [value, setValue] = useState(0);
-    const target = 142_850;
+    const target = 0;
 
     useEffect(() => {
-        const duration = 2000;
-        const steps = 60;
-        const increment = target / steps;
-        let current = 0;
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                setValue(target);
-                clearInterval(timer);
-            } else {
-                setValue(Math.floor(current));
-            }
-        }, duration / steps);
-        return () => clearInterval(timer);
-    }, []);
+        setValue(target);
+    }, [target]);
 
     return (
         <div className={styles.card}>

@@ -273,6 +273,39 @@
   color: rgba(138, 155, 142, 0.4);
 }
 
+.navVaultBtn {
+  margin-left: 16px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: var(--primary, #7cb87c);
+  color: #101a14;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.navVaultBtn:hover {
+  opacity: 0.9;
+}
+
+.primaryAction {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: var(--primary, #7cb87c);
+  color: #101a14;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.primaryAction:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
 /* ===== Responsive ===== */
 
 @media (max-width: 768px) {
