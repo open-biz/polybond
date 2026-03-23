@@ -5,6 +5,7 @@ import styles from "./disputed-markets.module.css";
 
 interface DisputedMarket {
     id: string;
+    slug?: string;
     question: string;
     lockInPrice: string;
     status: "bonding" | "resolved" | "monitoring";
@@ -63,34 +64,35 @@ export function DisputedMarkets() {
                 </div>
 
                 <div className={styles.list}>
-                    {isLoading ? (
-                        <div style={{ textAlign: "center", padding: "48px 24px", color: "rgba(138, 155, 142, 0.5)" }}>
-                            Scanning for delayed Polymarket disputes...
-                        </div>
-                    ) : markets.length > 0 ? markets.slice(0, visibleCount).map((market, idx) => {
-                        const config = STATUS_CONFIG[market.status];
-                        return (
-                            <div
-                                key={market.id}
-                                className={styles.item}
-                                style={{ animation: "fadeIn 0.5s ease-out forwards" }}
-                            >
-                                <div className={styles.itemLeft}>
-                                    <span className={`${styles.status} ${config.className}`}>
-                                        {config.label}
-                                    </span>
-                                    <span className={styles.question}>{market.question}</span>
-                                </div>
-                                <div className={styles.itemRight}>
-                                    <span className={styles.price}>{market.lockInPrice}</span>
-                                    <span className={styles.time}>{market.timeAgo}</span>
-                                </div>
-                            </div>
-                        );
-                    }) : (
+                    {isLoading || visibleCount === 0 ? (
                         <div style={{ textAlign: "center", padding: "48px 24px", color: "rgba(138, 155, 142, 0.5)" }}>
                             [AGENT] Initializing MoonPay CLI... Scanning Polymarket order books for active UMA disputes...
                         </div>
+                    ) : (
+                        markets.slice(0, visibleCount).map((market, idx) => {
+                            const config = STATUS_CONFIG[market.status];
+                            return (
+                                <a
+                                    key={market.id}
+                                    href={`https://polymarket.com/event/${market.slug || market.id}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={styles.item}
+                                    style={{ animation: "fadeIn 0.5s ease-out forwards", textDecoration: 'none' }}
+                                >
+                                    <div className={styles.itemLeft}>
+                                        <span className={`${styles.status} ${config.className}`}>
+                                            {config.label}
+                                        </span>
+                                        <span className={styles.question}>{market.question}</span>
+                                    </div>
+                                    <div className={styles.itemRight}>
+                                        <span className={styles.price}>{market.lockInPrice}</span>
+                                        <span className={styles.time}>{market.timeAgo}</span>
+                                    </div>
+                                </a>
+                            );
+                        })
                     )}
                 </div>
             </div>

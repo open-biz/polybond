@@ -6,6 +6,7 @@ import styles from "./vault-positions.module.css";
 
 interface Position {
     id: string;
+    slug?: string;
     market: string;
     entryPrice: string;
     currentValue: string;
@@ -70,7 +71,18 @@ export function VaultPositions() {
                             </tr>
                         ) : positions.length > 0 ? positions.map((pos) => (
                             <tr key={pos.id} className={styles.row}>
-                                <td className={styles.marketCell}>{pos.market}</td>
+                                <td className={styles.marketCell}>
+                                    <a 
+                                        href={`https://polymarket.com/event/${pos.slug || pos.id}`} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        style={{ color: 'inherit', textDecoration: 'none' }}
+                                        onMouseOver={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                                        onMouseOut={(e) => e.currentTarget.style.textDecoration = 'none'}
+                                    >
+                                        {pos.market}
+                                    </a>
+                                </td>
                                 <td className={styles.mono}>{pos.entryPrice}</td>
                                 <td className={styles.mono}>{pos.currentValue}</td>
                                 <td className={styles.returnCell}>{pos.expectedReturn}</td>

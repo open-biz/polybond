@@ -53,7 +53,8 @@ export function BentoFeatures() {
                 const data = await response.json();
                 // Map the data to the format expected by the marquee
                 const mapped = data.map((m: any) => ({
-                    id: m.id || m.question.replace(/\s+/g, '-').toLowerCase(),
+                    id: m.id,
+                    slug: m.slug || m.id,
                     name: m.question,
                     price: m.lockInPrice,
                     status: m.status.charAt(0).toUpperCase() + m.status.slice(1)
@@ -97,7 +98,7 @@ export function BentoFeatures() {
                                             {markets.map((m, i) => (
                                                 <a 
                                                     key={i} 
-                                                    href={`https://polymarket.com/event/${m.id}`} 
+                                                    href={`https://polymarket.com/event/${m.slug}`} 
                                                     target="_blank" 
                                                     rel="noopener noreferrer" 
                                                     className={styles.marketChip}
@@ -113,7 +114,7 @@ export function BentoFeatures() {
                                             {markets.slice().reverse().map((m, i) => (
                                                 <a 
                                                     key={i} 
-                                                    href={`https://polymarket.com/event/${m.id}`} 
+                                                    href={`https://polymarket.com/event/${m.slug}`} 
                                                     target="_blank" 
                                                     rel="noopener noreferrer" 
                                                     className={styles.marketChip}
