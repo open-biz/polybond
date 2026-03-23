@@ -27,11 +27,8 @@ export default function Home() {
             </svg>
             <span className={styles.logoText}>PolyBond</span>
           </div>
-          <div className={styles.headerRight} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div className={styles.headerRight}>
             <SafeWalletConnector />
-            <span className={styles.network}>Base Network</span>
-            <div className={styles.pulse} />
-            <Link href="/vault" className={styles.navVaultBtn}>Open Vault</Link>
           </div>
         </div>
       </header>
@@ -54,7 +51,7 @@ export default function Home() {
 
         <p className={styles.heroPowered}>
           <span className={styles.poweredDot} />
-          Powered by UMA &amp; Polymarket
+          Powered by UMA &amp; Polymarket • Built on Base
         </p>
       </section>
 

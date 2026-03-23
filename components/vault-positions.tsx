@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import styles from "./vault-positions.module.css";
 
 interface Position {
@@ -13,8 +14,6 @@ interface Position {
     progress: number;
 }
 
-const MOCK_POSITIONS: Position[] = [];
-
 const STATUS_LABELS: Record<string, string> = {
     active: "Active",
     resolving: "Resolving",
@@ -22,11 +21,29 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export function VaultPositions() {
+    const [positions, setPositions] = useState<Position[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchPositions() {
+            try {
+                const response = await fetch('/data/positions.json');
+                const data = await response.json();
+                setPositions(data);
+            } catch (error) {
+                console.error("Error loading positions:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchPositions();
+    }, []);
+
     return (
         <section className={styles.section}>
             <div className={styles.header}>
                 <h2 className={styles.title}>Active Positions</h2>
-                <span className={styles.count}>{MOCK_POSITIONS.length} bonds</span>
+                <span className={styles.count}>{positions.length} bonds</span>
             </div>
 
             <div className={styles.tableWrap}>
@@ -42,7 +59,13 @@ export function VaultPositions() {
                         </tr>
                     </thead>
                     <tbody>
-                        {MOCK_POSITIONS.length > 0 ? MOCK_POSITIONS.map((pos) => (
+                        {isLoading ? (
+                            <tr>
+                                <td colSpan={6} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
+                                    Loading active positions...
+                                </td>
+                            </tr>
+                        ) : positions.length > 0 ? positions.map((pos) => (
                             <tr key={pos.id} className={styles.row}>
                                 <td className={styles.marketCell}>{pos.market}</td>
                                 <td className={styles.mono}>{pos.entryPrice}</td>

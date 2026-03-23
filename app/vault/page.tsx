@@ -35,10 +35,8 @@ export default function VaultPage() {
                             <span className={styles.logoText}>PolyBond Vault</span>
                         </div>
                     </div>
-                    <div className={styles.headerRight} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div className={styles.headerRight}>
                         <SafeWalletConnector />
-                        <span className={styles.network}>Base Network</span>
-                        <div className={styles.pulse} />
                     </div>
                 </div>
             </header>

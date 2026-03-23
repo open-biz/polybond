@@ -1,0 +1,15 @@
+[
+    {
+        "id": "677397",
+        "market": "Will the Fed cut rates in March 2026?",
+        "conditionId": "0x24fb7c2d95c93a68018e6c4a90d88043bb67d32fd1454924cef8ebdd550228f3",
+        "assetId": "62174615336627888814453166657652087168672936561990669762061326057126859157348",
+        "entryPrice": "$0.984",
+        "currentValue": "$0.984",
+        "expectedReturn": "+1.63%",
+        "status": "active",
+        "timeRemaining": "1d 14h",
+        "progress": 30,
+        "entryDate": "2026-03-22T14:30:00Z"
+    }
+]

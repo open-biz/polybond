@@ -1,11 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Search, Zap, Shield, BarChart3 } from "lucide-react";
 import { BentoGrid, BentoCard } from "./bento-grid";
 import { Marquee } from "./marquee";
 import styles from "./bento-features.module.css";
-
-const DISPUTED_MARKETS: any[] = [];
 
 function DotPatternBG() {
     return (
@@ -45,6 +44,27 @@ function YieldBeam() {
 }
 
 export function BentoFeatures() {
+    const [markets, setMarkets] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function fetchMarkets() {
+            try {
+                const response = await fetch('/data/disputes.json');
+                const data = await response.json();
+                // Map the data to the format expected by the marquee
+                const mapped = data.map((m: any) => ({
+                    name: m.question,
+                    price: m.lockInPrice,
+                    status: m.status.charAt(0).toUpperCase() + m.status.slice(1)
+                }));
+                setMarkets(mapped);
+            } catch (error) {
+                console.error("Error fetching bento markets:", error);
+            }
+        }
+        fetchMarkets();
+    }, []);
+
     return (
         <section className={styles.section}>
             <div className={styles.container}>
@@ -68,10 +88,10 @@ export function BentoFeatures() {
                         colSpan={2}
                         background={
                             <div className={styles.marqueeWrap}>
-                                {DISPUTED_MARKETS.length > 0 ? (
+                                {markets.length > 0 ? (
                                     <>
                                         <Marquee speed={25} pauseOnHover>
-                                            {DISPUTED_MARKETS.map((m, i) => (
+                                            {markets.map((m, i) => (
                                                 <div key={i} className={styles.marketChip}>
                                                     <span className={styles.marketStatus}>{m.status}</span>
                                                     <span className={styles.marketName}>{m.name}</span>
@@ -80,7 +100,7 @@ export function BentoFeatures() {
                                             ))}
                                         </Marquee>
                                         <Marquee speed={35} pauseOnHover direction="right">
-                                            {DISPUTED_MARKETS.slice().reverse().map((m, i) => (
+                                            {markets.slice().reverse().map((m, i) => (
                                                 <div key={i} className={styles.marketChip}>
                                                     <span className={styles.marketStatus}>{m.status}</span>
                                                     <span className={styles.marketName}>{m.name}</span>
@@ -90,8 +110,8 @@ export function BentoFeatures() {
                                         </Marquee>
                                     </>
                                 ) : (
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'rgba(124, 184, 124, 0.2)', fontSize: '14px' }}>
-                                        Scanning Polymarket...
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'rgba(124, 184, 124, 0.2)', fontSize: '14px', textAlign: 'center', padding: '0 16px' }}>
+                                        [AGENT] Initializing MoonPay CLI... Scanning Polymarket order books for active UMA disputes...
                                     </div>
                                 )}
                             </div>

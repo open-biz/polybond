@@ -51,6 +51,21 @@ function AnimatedStat({
 }
 
 export function VaultDashboard() {
+    const [stats, setStats] = useState({ baseYield: 0, compoundedYield: 0 });
+
+    useEffect(() => {
+        async function fetchStats() {
+            try {
+                const response = await fetch('/data/global-stats.json');
+                const data = await response.json();
+                setStats(data);
+            } catch (error) {
+                console.error("Error fetching global stats:", error);
+            }
+        }
+        fetchStats();
+    }, []);
+
     return (
         <section className={styles.section}>
             <div className={styles.container}>
@@ -58,14 +73,14 @@ export function VaultDashboard() {
                     {/* Stats Row */}
                     <div className={styles.statsRow}>
                         <AnimatedStat
-                            value={0}
+                            value={stats.baseYield}
                             suffix="% APR"
                             label="Base Yield"
                             delay={200}
                         />
                         <div className={styles.divider} />
                         <AnimatedStat
-                            value={0}
+                            value={stats.compoundedYield}
                             suffix="% APY"
                             label="Compounded"
                             delay={500}

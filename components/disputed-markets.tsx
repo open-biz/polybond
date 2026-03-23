@@ -11,44 +11,6 @@ interface DisputedMarket {
     timeAgo: string;
 }
 
-const MOCK_MARKETS: DisputedMarket[] = [
-    {
-        id: "1",
-        status: "bonding",
-        question: "Will ETH hit $4,000 by March 31?",
-        lockInPrice: "$0.97",
-        timeAgo: "2m ago",
-    },
-    {
-        id: "2",
-        status: "monitoring",
-        question: "Will the Fed cut rates in March?",
-        lockInPrice: "$0.98",
-        timeAgo: "15m ago",
-    },
-    {
-        id: "3",
-        status: "resolved",
-        question: "Will SpaceX launch Starship in Q1?",
-        lockInPrice: "$1.00",
-        timeAgo: "1h ago",
-    },
-    {
-        id: "4",
-        status: "bonding",
-        question: "Will Bitcoin ETF net inflows exceed $2B this week?",
-        lockInPrice: "$0.96",
-        timeAgo: "2h ago",
-    },
-    {
-        id: "5",
-        status: "monitoring",
-        question: "Will GPT-5 be announced by June?",
-        lockInPrice: "$0.99",
-        timeAgo: "4h ago",
-    }
-];
-
 const STATUS_CONFIG = {
     bonding: { label: "Bonding", className: styles.statusBonding },
     resolved: { label: "Resolved", className: styles.statusResolved },
@@ -56,29 +18,42 @@ const STATUS_CONFIG = {
 };
 
 export function DisputedMarkets() {
-    const [visibleMarkets, setVisibleMarkets] = useState<DisputedMarket[]>([]);
+    const [markets, setMarkets] = useState<DisputedMarket[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [visibleCount, setVisibleCount] = useState(0);
 
-    // Simulate the agent "pulling" data over time via the MoonPay CLI
     useEffect(() => {
-        let currentIndex = 0;
-        const interval = setInterval(() => {
-            if (currentIndex < MOCK_MARKETS.length) {
-                setVisibleMarkets(prev => [...prev, MOCK_MARKETS[currentIndex]]);
-                currentIndex++;
-            } else {
-                clearInterval(interval);
+        async function fetchDisputes() {
+            try {
+                const response = await fetch('/data/disputes.json');
+                const data = await response.json();
+                setMarkets(data);
+            } catch (error) {
+                console.error("Error fetching disputes:", error);
+            } finally {
+                setIsLoading(false);
             }
-        }, 800); // Add a new market every 800ms for a "live feed" effect
-
-        return () => clearInterval(interval);
+        }
+        fetchDisputes();
     }, []);
+
+    useEffect(() => {
+        if (markets.length === 0) return;
+        const timer = setInterval(() => {
+            setVisibleCount((prev) => {
+                if (prev >= markets.length) return prev;
+                return prev + 1;
+            });
+        }, 800);
+        return () => clearInterval(timer);
+    }, [markets.length]);
 
     return (
         <section className={styles.section}>
             <div className={styles.container}>
                 <div className={styles.header}>
                     <div>
-                        <span className={styles.label}>Live Agent Feed (via MoonPay CLI)</span>
+                        <span className={styles.label}>Live Agent Feed</span>
                         <h3 className={styles.title}>Currently Disputed Markets</h3>
                     </div>
                     <div className={styles.liveIndicator}>
@@ -88,7 +63,11 @@ export function DisputedMarkets() {
                 </div>
 
                 <div className={styles.list}>
-                    {visibleMarkets.length > 0 ? visibleMarkets.map((market, idx) => {
+                    {isLoading ? (
+                        <div style={{ textAlign: "center", padding: "48px 24px", color: "rgba(138, 155, 142, 0.5)" }}>
+                            Scanning for delayed Polymarket disputes...
+                        </div>
+                    ) : markets.length > 0 ? markets.slice(0, visibleCount).map((market, idx) => {
                         const config = STATUS_CONFIG[market.status];
                         return (
                             <div

@@ -3,6 +3,7 @@ import { privateKeyToAccount } from "viem/accounts";
 import { base } from "viem/chains";
 import * as fs from "fs";
 import * as path from "path";
+// @ts-ignore
 import solc from "solc";
 import dotenv from "dotenv";
 

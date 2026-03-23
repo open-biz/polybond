@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ArrowDown, ArrowUp, Shield, ExternalLink } from "lucide-react";
 import { parseUnits, encodeFunctionData } from "viem";
-import { useAccount } from "wagmi";
+import { useAccount, useWalletClient } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Safe from "@safe-global/protocol-kit";
 import { useSafe } from "./safe-context";
@@ -13,12 +13,57 @@ import styles from "./vault-actions.module.css";
 
 export function VaultActions() {
     const { address, connector } = useAccount();
+    const { data: walletClient } = useWalletClient();
     const { openConnectModal } = useConnectModal();
-    const { safeAddress } = useSafe();
+    const { safeAddress, setSafeAddress } = useSafe();
     const [depositAmount, setDepositAmount] = useState("");
     const [withdrawAmount, setWithdrawAmount] = useState("");
     const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
     const [isPending, setIsPending] = useState(false);
+    const [isDeployingSafe, setIsDeployingSafe] = useState(false);
+
+    const deploySafe = async () => {
+        if (!address || !connector || !walletClient) return;
+
+        try {
+            setIsDeployingSafe(true);
+
+            const safeAccountConfig = {
+                owners: [address],
+                threshold: 1,
+            };
+
+            const predictedSafe = {
+                safeAccountConfig,
+            };
+
+            const provider = await connector.getProvider();
+
+            const protocolKit = await Safe.init({
+                provider: provider as any,
+                signer: address,
+                predictedSafe,
+            });
+
+            const deploymentTransaction = await protocolKit.createSafeDeploymentTransaction();
+
+            const txHash = await walletClient.sendTransaction({
+                to: deploymentTransaction.to as `0x${string}`,
+                value: BigInt(deploymentTransaction.value),
+                data: deploymentTransaction.data as `0x${string}`,
+            });
+
+            console.log("Safe deployment transaction sent:", txHash);
+
+            const deployedAddress = await protocolKit.getAddress();
+            setSafeAddress(deployedAddress);
+        } catch (error) {
+            console.error("Error deploying safe:", error);
+            alert("Failed to deploy Safe. See console for details.");
+        } finally {
+            setIsDeployingSafe(false);
+        }
+    };
 
     const handleDeposit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -71,7 +116,9 @@ export function VaultActions() {
             
             // Execute the transaction directly from the 1/1 Safe
             const txResponse = await safeProtocolKit.executeTransaction(safeTransaction);
-            await txResponse.transactionResponse?.wait();
+            if (txResponse.transactionResponse && (txResponse.transactionResponse as any).wait) {
+                await (txResponse.transactionResponse as any).wait();
+            }
 
             alert(`Successfully deposited $${depositAmount} USDC into the PolyBond Pool!`);
             setDepositAmount("");
@@ -118,7 +165,9 @@ export function VaultActions() {
 
             const safeTransaction = await safeProtocolKit.createTransaction({ transactions: safeTransactionData });
             const txResponse = await safeProtocolKit.executeTransaction(safeTransaction);
-            await txResponse.transactionResponse?.wait();
+            if (txResponse.transactionResponse && (txResponse.transactionResponse as any).wait) {
+                await (txResponse.transactionResponse as any).wait();
+            }
 
             alert(`Successfully withdrew shares from the PolyBond Pool!`);
             setWithdrawAmount("");
@@ -145,8 +194,13 @@ export function VaultActions() {
         }
         if (!safeAddress) {
             return (
-                <button type="button" className={styles.actionBtn} disabled>
-                    Setup Vault First
+                <button 
+                    type="button" 
+                    className={styles.actionBtn} 
+                    onClick={deploySafe}
+                    disabled={isDeployingSafe || !walletClient}
+                >
+                    {isDeployingSafe ? "Deploying Vault..." : "Setup Safe Vault"}
                 </button>
             );
         }

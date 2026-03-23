@@ -5,11 +5,19 @@ import styles from "./tvl-card.module.css";
 
 export function TVLCard() {
     const [value, setValue] = useState(0);
-    const target = 0;
 
     useEffect(() => {
-        setValue(target);
-    }, [target]);
+        async function fetchTVL() {
+            try {
+                const response = await fetch('/data/global-stats.json');
+                const data = await response.json();
+                setValue(data.tvl);
+            } catch (error) {
+                console.error("Error fetching TVL:", error);
+            }
+        }
+        fetchTVL();
+    }, []);
 
     return (
         <div className={styles.card}>
