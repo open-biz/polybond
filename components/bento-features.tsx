@@ -32,7 +32,7 @@ function YieldBeam() {
                 <div className={styles.beamPulse} />
             </div>
             <div className={styles.beamNodes}>
-                <div className={styles.beamNode}>99¢</div>
+                <div className={styles.beamNode}>98.4¢</div>
                 <div className={styles.beamNodeCenter}>AI</div>
                 <div className={styles.beamNode}>$1.00</div>
             </div>

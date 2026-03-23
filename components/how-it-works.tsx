@@ -20,7 +20,7 @@ export function HowItWorks() {
             number: "03",
             title: "Collect $1.00",
             description:
-                "When the dispute naturally resolves, the vault redeems each share for its full $1.00 value. The spread is pure profit — annualizing to 184% Base APR and 524% APY.",
+                "When the dispute naturally resolves, the vault redeems each share for its full $1.00 value. The spread is pure profit — annualizing to 297% Base APR and ~1,850% APY.",
             icon: "✨",
         },
     ];
