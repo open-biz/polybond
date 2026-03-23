@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
-import { AI_AGENT_ADDRESS } from "@/config/contracts";
+import { useAccount, useReadContract } from "wagmi";
+import { formatUnits } from "viem";
+import { AI_AGENT_ADDRESS, USDC_ADDRESS } from "@/config/contracts";
+import { ERC20_ABI } from "@/config/abi";
+import { useSafe } from "./safe-context";
 import styles from "./vault-portfolio.module.css";
 
 interface StatCardProps {
@@ -24,15 +27,31 @@ function StatCard({ label, value, subValue, accent }: StatCardProps) {
 
 export function VaultPortfolio() {
     const { address } = useAccount();
+    const { safeAddress } = useSafe();
     const [balance, setBalance] = useState(0);
-    const target = 0;
+
+    const { data: balanceData } = useReadContract({
+        address: USDC_ADDRESS as `0x${string}`,
+        abi: ERC20_ABI,
+        functionName: "balanceOf",
+        args: [(safeAddress || address) as `0x${string}`],
+        query: {
+            enabled: !!(safeAddress || address),
+            refetchInterval: 10000,
+        }
+    });
+
+    useEffect(() => {
+        if (balanceData !== undefined) {
+            setBalance(Number(formatUnits(balanceData as bigint, 6)));
+        } else {
+            setBalance(0);
+        }
+    }, [balanceData]);
+
     const yieldEarned = 0;
     const apr = 0;
     const daysActive = 0;
-
-    useEffect(() => {
-        setBalance(target);
-    }, [target]);
 
     return (
         <section className={styles.section}>

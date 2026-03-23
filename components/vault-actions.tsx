@@ -321,12 +321,24 @@ export function VaultActions() {
                     <div className={styles.safeInfo}>
                         <div className={styles.safeRow}>
                             <span className={styles.safeLabel}>Safe Address</span>
-                            <div className={styles.safeAddress}>
-                                <span className={styles.mono}>
-                                    {safeAddress ? `${safeAddress.slice(0, 6)}...${safeAddress.slice(-4)}` : "Not Created"}
-                                </span>
-                                {safeAddress && <ExternalLink size={12} className={styles.linkIcon} />}
-                            </div>
+                            {safeAddress ? (
+                                <a 
+                                    href={`https://app.safe.global/home?safe=base:${safeAddress}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={styles.safeAddress}
+                                    style={{ textDecoration: 'none', color: 'inherit' }}
+                                >
+                                    <span className={styles.mono}>
+                                        {safeAddress.slice(0, 6)}...{safeAddress.slice(-4)}
+                                    </span>
+                                    <ExternalLink size={12} className={styles.linkIcon} />
+                                </a>
+                            ) : (
+                                <div className={styles.safeAddress}>
+                                    <span className={styles.mono}>Not Created</span>
+                                </div>
+                            )}
                         </div>
                         <div className={styles.safeRow}>
                             <span className={styles.safeLabel}>Signers</span>
