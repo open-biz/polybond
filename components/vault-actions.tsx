@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowDown, ArrowUp, Shield, ExternalLink, Wallet, Info } from "lucide-react";
+import { ArrowDown, ArrowUp, Shield, ExternalLink, Wallet, Info, X, AlertTriangle } from "lucide-react";
 import { parseUnits, encodeFunctionData, formatUnits } from "viem";
 import { useAccount, useWalletClient, usePublicClient, useBalance, useReadContract } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
@@ -59,6 +59,22 @@ export function VaultActions() {
     const [isPending, setIsPending] = useState(false);
     const [isDeployingSafe, setIsDeployingSafe] = useState(false);
 
+    // Modal State
+    const [modal, setModal] = useState<{ isOpen: boolean; title: string; message: string; type: "error" | "success" | "info" }>({
+        isOpen: false,
+        title: "",
+        message: "",
+        type: "info"
+    });
+
+    const showModal = (title: string, message: string, type: "error" | "success" | "info" = "info") => {
+        setModal({ isOpen: true, title, message, type });
+    };
+
+    const closeModal = () => {
+        setModal({ ...modal, isOpen: false });
+    };
+
     const deploySafe = async () => {
         if (!address || !connector || !walletClient) return;
 
@@ -101,9 +117,13 @@ export function VaultActions() {
 
             const deployedAddress = await protocolKit.getAddress();
             setSafeAddress(deployedAddress);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error deploying safe:", error);
-            alert("Failed to deploy Safe. See console for details.");
+            if (error?.message?.includes("User rejected")) {
+                 showModal("Transaction Rejected", "You cancelled the Safe deployment request in your wallet.", "error");
+            } else {
+                 showModal("Deployment Failed", "Failed to deploy Safe. Check console for details.", "error");
+            }
         } finally {
             setIsDeployingSafe(false);
         }
@@ -113,7 +133,7 @@ export function VaultActions() {
         e.preventDefault();
         
         if (!address || !walletClient || !publicClient) {
-            alert("Please connect your wallet first.");
+            showModal("Wallet Disconnected", "Please connect your wallet first.", "error");
             return;
         }
 
@@ -153,15 +173,17 @@ export function VaultActions() {
 
             await publicClient.waitForTransactionReceipt({ hash: depositTxHash });
 
-            alert(`Successfully deposited $${depositAmount} USDC into the PolyBond Pool!`);
+            showModal("Deposit Successful", `Successfully deposited $${depositAmount} USDC into the PolyBond Pool!`, "success");
             setDepositAmount("");
 
         } catch (error: any) {
             console.error("Deposit error:", error);
-            if (error?.message?.includes('insufficient funds') || error?.message?.includes('exceeds balance')) {
-                alert(`Transaction failed: Insufficient USDC balance. Your wallet has ${usdcBalance?.formatted || "0"} USDC.`);
+            if (error?.message?.includes('User rejected') || error?.message?.includes('denied transaction')) {
+                showModal("Transaction Rejected", "You cancelled the deposit request in your wallet.", "error");
+            } else if (error?.message?.includes('insufficient funds') || error?.message?.includes('exceeds balance')) {
+                showModal("Insufficient Funds", `Transaction failed: Insufficient USDC balance. Your wallet has ${usdcBalance?.formatted || "0"} USDC.`, "error");
             } else {
-                alert("Deposit failed. Ensure you have enough USDC and ETH for gas fees.");
+                showModal("Deposit Failed", "Ensure you have enough USDC and ETH for gas fees.", "error");
             }
         } finally {
             setIsPending(false);
@@ -172,7 +194,7 @@ export function VaultActions() {
         e.preventDefault();
         
         if (!address || !walletClient || !publicClient) {
-            alert("Please connect your wallet first.");
+            showModal("Wallet Disconnected", "Please connect your wallet first.", "error");
             return;
         }
 
@@ -196,12 +218,16 @@ export function VaultActions() {
 
             await publicClient.waitForTransactionReceipt({ hash: withdrawTxHash });
 
-            alert(`Successfully withdrew shares from the PolyBond Pool!`);
+            showModal("Withdrawal Successful", `Successfully withdrew shares from the PolyBond Pool!`, "success");
             setWithdrawAmount("");
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Withdraw error:", error);
-            alert("Withdraw failed. See console for details.");
+             if (error?.message?.includes('User rejected') || error?.message?.includes('denied transaction')) {
+                showModal("Transaction Rejected", "You cancelled the withdrawal request in your wallet.", "error");
+            } else {
+                showModal("Withdrawal Failed", "Check your wallet or the console for details.", "error");
+            }
         } finally {
             setIsPending(false);
         }
@@ -239,7 +265,62 @@ export function VaultActions() {
     };
 
     return (
-        <section className={styles.section}>
+        <section className={styles.section} style={{ position: 'relative' }}>
+            {/* Modal Overlay */}
+            {modal.isOpen && (
+                <div style={{
+                    position: 'absolute',
+                    top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    backdropFilter: 'blur(4px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 50,
+                    borderRadius: '12px'
+                }}>
+                    <div style={{
+                        background: 'var(--card-bg, #1a1a1a)',
+                        border: `1px solid ${modal.type === 'error' ? 'rgba(255, 69, 58, 0.3)' : modal.type === 'success' ? 'rgba(124, 184, 124, 0.3)' : 'rgba(255, 255, 255, 0.1)'}`,
+                        borderRadius: '12px',
+                        padding: '24px',
+                        maxWidth: '400px',
+                        width: '90%',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
+                    }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: modal.type === 'error' ? '#FF453A' : modal.type === 'success' ? '#7cb87c' : 'white' }}>
+                                {modal.type === 'error' && <AlertTriangle size={20} />}
+                                {modal.type === 'success' && <Shield size={20} />}
+                                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>{modal.title}</h3>
+                            </div>
+                            <button onClick={closeModal} style={{ background: 'none', border: 'none', color: 'var(--foreground)', opacity: 0.5, cursor: 'pointer' }}>
+                                <X size={18} />
+                            </button>
+                        </div>
+                        <p style={{ margin: 0, fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5 }}>
+                            {modal.message}
+                        </p>
+                        <button 
+                            onClick={closeModal}
+                            style={{
+                                marginTop: '24px',
+                                width: '100%',
+                                padding: '10px',
+                                borderRadius: '8px',
+                                border: 'none',
+                                background: modal.type === 'error' ? 'rgba(255, 69, 58, 0.1)' : 'rgba(124, 184, 124, 0.1)',
+                                color: modal.type === 'error' ? '#FF453A' : '#7cb87c',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Dismiss
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <div className={styles.grid}>
                 {/* Deposit/Withdraw Card */}
                 <div className={styles.card}>
