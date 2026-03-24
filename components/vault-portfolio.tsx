@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import { formatUnits } from "viem";
-import { AI_AGENT_ADDRESS, USDC_ADDRESS } from "@/config/contracts";
-import { ERC20_ABI } from "@/config/abi";
+import { AI_AGENT_ADDRESS, POLYBOND_STRATEGY_ADDRESS } from "@/config/contracts";
+import { POLYBOND_POOL_ABI } from "@/config/abi";
 import { useSafe } from "./safe-context";
 import styles from "./vault-portfolio.module.css";
 
@@ -31,12 +31,12 @@ export function VaultPortfolio() {
     const [balance, setBalance] = useState(0);
 
     const { data: balanceData } = useReadContract({
-        address: USDC_ADDRESS as `0x${string}`,
-        abi: ERC20_ABI,
-        functionName: "balanceOf",
-        args: [(safeAddress || address) as `0x${string}`],
+        address: POLYBOND_STRATEGY_ADDRESS as `0x${string}`,
+        abi: POLYBOND_POOL_ABI,
+        functionName: "shares",
+        args: [address as `0x${string}`],
         query: {
-            enabled: !!(safeAddress || address),
+            enabled: !!address,
             refetchInterval: 10000,
         }
     });
@@ -50,7 +50,7 @@ export function VaultPortfolio() {
     }, [balanceData]);
 
     const yieldEarned = 0;
-    const apr = 0;
+    const apr = 492;
     const daysActive = 0;
 
     return (
@@ -71,8 +71,8 @@ export function VaultPortfolio() {
             <div className={styles.grid}>
                 <StatCard
                     label="Vault Balance"
-                    value={`$${balance.toLocaleString()}`}
-                    subValue="USDC deposited"
+                    value={`$${balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+                    subValue="USDC equivalent"
                     accent
                 />
                 <StatCard

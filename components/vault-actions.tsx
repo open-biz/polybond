@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { ArrowDown, ArrowUp, Shield, ExternalLink, Wallet } from "lucide-react";
-import { parseUnits, encodeFunctionData, formatUnits } from "viem";
-import { useAccount, useWalletClient, usePublicClient, useBalance } from "wagmi";
+import { parseUnits, encodeFunctionData } from "viem";
+import { useAccount, useWalletClient, usePublicClient, useBalance, useReadContract } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Safe from "@safe-global/protocol-kit";
 import { useSafe } from "./safe-context";
@@ -18,10 +18,27 @@ export function VaultActions() {
     const { openConnectModal } = useConnectModal();
     const { safeAddress, setSafeAddress } = useSafe();
     
+    // Fetch ETH balance (for gas)
+    const { data: ethBalance } = useBalance({
+        address,
+    });
+
     // Fetch USDC balance for the user's connected wallet
     const { data: usdcBalance } = useBalance({
         address,
         token: USDC_ADDRESS as `0x${string}`,
+    });
+
+    // Fetch user's vault shares
+    const { data: sharesData } = useReadContract({
+        address: POLYBOND_STRATEGY_ADDRESS as `0x${string}`,
+        abi: POLYBOND_POOL_ABI,
+        functionName: "shares",
+        args: [address as `0x${string}`],
+        query: {
+            enabled: !!address,
+            refetchInterval: 10000,
+        }
     });
 
     const [depositAmount, setDepositAmount] = useState("");
@@ -129,9 +146,8 @@ export function VaultActions() {
 
         } catch (error: any) {
             console.error("Deposit error:", error);
-            // Catch common errors (e.g., insufficient funds) and show a better message
             if (error?.message?.includes('insufficient funds') || error?.message?.includes('exceeds balance')) {
-                alert(`Transaction failed: Insufficient USDC balance. Your wallet has ${usdcBalance ? formatUnits(usdcBalance.value, 6) : "0"} USDC.`);
+                alert(`Transaction failed: Insufficient USDC balance. Your wallet has ${usdcBalance?.formatted || "0"} USDC.`);
             } else {
                 alert("Deposit failed. Ensure you have enough USDC and ETH for gas fees.");
             }
@@ -232,13 +248,23 @@ export function VaultActions() {
                         </button>
                     </div>
 
-                    {/* Wallet Balance Display */}
-                    {address && usdcBalance && (
-                        <div className={styles.walletBalanceRow} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', marginBottom: '16px' }}>
-                            <Wallet size={16} color="var(--primary)" />
-                            <span style={{ fontSize: '14px', color: 'var(--foreground)' }}>
-                                Wallet Balance: <strong style={{ color: 'var(--primary)' }}>{formatUnits(usdcBalance.value, 6)} USDC</strong>
-                            </span>
+                    {/* Wallet Balances Display */}
+                    {address && (
+                        <div className={styles.walletBalanceRow} style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', marginBottom: '16px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <Wallet size={16} color="var(--primary)" />
+                                <span style={{ fontSize: '14px', color: 'var(--foreground)' }}>
+                                    Wallet Balance
+                                </span>
+                            </div>
+                            <div style={{ display: 'flex', gap: '16px', fontSize: '13px' }}>
+                                <span>
+                                    <strong style={{ color: 'var(--primary)' }}>{usdcBalance ? Number(usdcBalance.formatted).toFixed(2) : "0.00"}</strong> USDC
+                                </span>
+                                <span>
+                                    <strong style={{ color: 'var(--primary)' }}>{ethBalance ? Number(ethBalance.formatted).toFixed(4) : "0.0000"}</strong> ETH
+                                </span>
+                            </div>
                         </div>
                     )}
 
@@ -261,7 +287,7 @@ export function VaultActions() {
                                         className={styles.maxBtn}
                                         onClick={() => {
                                             if (usdcBalance) {
-                                                setDepositAmount(formatUnits(usdcBalance.value, 6));
+                                                setDepositAmount(usdcBalance.formatted);
                                             }
                                         }}
                                     >
@@ -298,7 +324,11 @@ export function VaultActions() {
                                     <button
                                         type="button"
                                         className={styles.maxBtn}
-                                        onClick={() => setWithdrawAmount("0")}
+                                        onClick={() => {
+                                            if (sharesData !== undefined) {
+                                                setWithdrawAmount(formatUnits(sharesData as bigint, 6));
+                                            }
+                                        }}
                                     >
                                         MAX
                                     </button>
@@ -306,7 +336,7 @@ export function VaultActions() {
                             </div>
                             <div className={styles.infoRow}>
                                 <span>Available shares</span>
-                                <span className={styles.infoValue}>0.00</span>
+                                <span className={styles.infoValue}>{sharesData !== undefined ? Number(formatUnits(sharesData as bigint, 6)).toFixed(2) : "0.00"}</span>
                             </div>
                             <div className={styles.infoRow}>
                                 <span>Withdrawal fee</span>
