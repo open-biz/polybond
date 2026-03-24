@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowDown, ArrowUp, Shield, ExternalLink, Wallet } from "lucide-react";
-import { parseUnits, encodeFunctionData } from "viem";
+import { useState, useEffect } from "react";
+import { ArrowDown, ArrowUp, Shield, ExternalLink, Wallet, Info } from "lucide-react";
+import { parseUnits, encodeFunctionData, formatUnits } from "viem";
 import { useAccount, useWalletClient, usePublicClient, useBalance, useReadContract } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Safe from "@safe-global/protocol-kit";
@@ -40,6 +40,18 @@ export function VaultActions() {
             refetchInterval: 10000,
         }
     });
+
+    // Global Stats state
+    const [globalStats, setGlobalStats] = useState({ apr: 492 });
+
+    useEffect(() => {
+        fetch('/data/global-stats.json')
+            .then(res => res.json())
+            .then(data => {
+                if (data.baseYield) setGlobalStats({ apr: data.baseYield });
+            })
+            .catch(err => console.error("Failed to load global stats:", err));
+    }, []);
 
     const [depositAmount, setDepositAmount] = useState("");
     const [withdrawAmount, setWithdrawAmount] = useState("");
@@ -259,10 +271,10 @@ export function VaultActions() {
                             </div>
                             <div style={{ display: 'flex', gap: '16px', fontSize: '13px' }}>
                                 <span>
-                                    <strong style={{ color: 'var(--primary)' }}>{usdcBalance ? Number(usdcBalance.formatted).toFixed(2) : "0.00"}</strong> USDC
+                                    <strong style={{ color: 'var(--primary)' }}>{usdcBalance?.formatted ? Number(usdcBalance.formatted).toFixed(2) : "0.00"}</strong> USDC
                                 </span>
                                 <span>
-                                    <strong style={{ color: 'var(--primary)' }}>{ethBalance ? Number(ethBalance.formatted).toFixed(4) : "0.0000"}</strong> ETH
+                                    <strong style={{ color: 'var(--primary)' }}>{ethBalance?.formatted ? Number(ethBalance.formatted).toFixed(4) : "0.0000"}</strong> ETH
                                 </span>
                             </div>
                         </div>
@@ -286,7 +298,7 @@ export function VaultActions() {
                                         type="button"
                                         className={styles.maxBtn}
                                         onClick={() => {
-                                            if (usdcBalance) {
+                                            if (usdcBalance?.formatted) {
                                                 setDepositAmount(usdcBalance.formatted);
                                             }
                                         }}
@@ -296,8 +308,8 @@ export function VaultActions() {
                                 </div>
                             </div>
                             <div className={styles.infoRow}>
-                                <span>Current APR</span>
-                                <span className={styles.infoValue}>492%</span>
+                                <span>Agent APR (JSON Live)</span>
+                                <span className={styles.infoValue}>{globalStats.apr}%</span>
                             </div>
                             <div className={styles.infoRow}>
                                 <span>Estimated daily yield</span>
@@ -387,6 +399,13 @@ export function VaultActions() {
                                 Base
                             </span>
                         </div>
+                    </div>
+
+                    <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '8px', display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                        <Info size={16} color="var(--primary)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                        <p style={{ fontSize: '12px', color: 'var(--foreground)', opacity: 0.8, margin: 0, lineHeight: 1.4 }}>
+                            <strong>Architecture Note:</strong> When you deposit, your USDC goes into the PolyBond Pool smart contract (yielding shares). This Gnosis Safe is the <em>AI Execution Layer</em>—it acts via Zodiac modules to trigger arbitrage trades using the pool's capital without custodying it.
+                        </p>
                     </div>
 
                     {safeAddress && (

@@ -29,6 +29,7 @@ export function VaultPortfolio() {
     const { address } = useAccount();
     const { safeAddress } = useSafe();
     const [balance, setBalance] = useState(0);
+    const [stats, setStats] = useState({ yieldEarned: 0, apr: 492, daysActive: 0 });
 
     const { data: balanceData } = useReadContract({
         address: POLYBOND_STRATEGY_ADDRESS as `0x${string}`,
@@ -49,9 +50,19 @@ export function VaultPortfolio() {
         }
     }, [balanceData]);
 
-    const yieldEarned = 0;
-    const apr = 492;
-    const daysActive = 0;
+    useEffect(() => {
+        // Fetch Live Stats from AI Agent JSON
+        Promise.all([
+            fetch('/data/global-stats.json').then(r => r.json()).catch(() => ({})),
+            fetch('/data/portfolio.json').then(r => r.json()).catch(() => ({}))
+        ]).then(([globalData, portfolioData]) => {
+            setStats(prev => ({
+                apr: globalData.baseYield || prev.apr,
+                yieldEarned: portfolioData.yieldEarned || 0,
+                daysActive: portfolioData.daysActive || 0
+            }));
+        });
+    }, []);
 
     return (
         <section className={styles.section}>
@@ -65,29 +76,29 @@ export function VaultPortfolio() {
                 </div>
                 <div className={styles.walletBadge}>
                     <span className={styles.walletDot} />
-                    <span>AI Strategist: {AI_AGENT_ADDRESS.slice(0, 6)}...{AI_AGENT_ADDRESS.slice(-4)}</span>
+                    <span>AI Strategist (via Zodiac): {AI_AGENT_ADDRESS.slice(0, 6)}...{AI_AGENT_ADDRESS.slice(-4)}</span>
                 </div>
             </div>
             <div className={styles.grid}>
                 <StatCard
                     label="Vault Balance"
                     value={`$${balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-                    subValue="USDC equivalent"
+                    subValue="USDC equivalent (Live Shares)"
                     accent
                 />
                 <StatCard
                     label="Yield Earned"
-                    value={`$${yieldEarned.toLocaleString()}`}
-                    subValue="Lifetime returns"
+                    value={`$${stats.yieldEarned.toLocaleString()}`}
+                    subValue="Agent Lifetime Returns"
                 />
                 <StatCard
                     label="Current APR"
-                    value={`${apr}%`}
-                    subValue="Annualized"
+                    value={`${stats.apr}%`}
+                    subValue="Live Agent Performance"
                 />
                 <StatCard
                     label="Days Active"
-                    value={`${daysActive}`}
+                    value={`${stats.daysActive}`}
                     subValue="Since first deposit"
                 />
             </div>
