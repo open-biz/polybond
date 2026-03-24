@@ -7,7 +7,7 @@ import { useAccount, useWalletClient, usePublicClient, useBalance, useReadContra
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Safe from "@safe-global/protocol-kit";
 import { useSafe } from "./safe-context";
-import { USDC_ADDRESS, POLYBOND_STRATEGY_ADDRESS } from "@/config/contracts";
+import { USDC_ADDRESS, POLYBOND_STRATEGY_ADDRESS, CHAIN_ID } from "@/config/contracts";
 import { ERC20_ABI, POLYBOND_POOL_ABI } from "@/config/abi";
 import styles from "./vault-actions.module.css";
 
@@ -19,14 +19,16 @@ export function VaultActions() {
     const { safeAddress, setSafeAddress } = useSafe();
     
     // Fetch ETH balance (for gas)
-    const { data: ethBalance } = useBalance({
+    const { data: ethBalance, isLoading: isLoadingEth } = useBalance({
         address,
+        chainId: CHAIN_ID,
     });
 
     // Fetch USDC balance for the user's connected wallet
-    const { data: usdcBalance } = useBalance({
+    const { data: usdcBalance, isLoading: isLoadingUsdc } = useBalance({
         address,
         token: USDC_ADDRESS as `0x${string}`,
+        chainId: CHAIN_ID,
     });
 
     // Fetch user's vault shares
@@ -35,6 +37,7 @@ export function VaultActions() {
         abi: POLYBOND_POOL_ABI,
         functionName: "shares",
         args: [address as `0x${string}`],
+        chainId: CHAIN_ID,
         query: {
             enabled: !!address,
             refetchInterval: 10000,
@@ -264,6 +267,9 @@ export function VaultActions() {
         );
     };
 
+    // Calculate daily yield based on current APR
+    const dailyYieldValue = depositAmount ? (Number(depositAmount) * (globalStats.apr / 100) / 365).toFixed(2) : "0.00";
+
     return (
         <section className={styles.section} style={{ position: 'relative' }}>
             {/* Modal Overlay */}
@@ -343,20 +349,26 @@ export function VaultActions() {
 
                     {/* Wallet Balances Display */}
                     {address && (
-                        <div className={styles.walletBalanceRow} style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', marginBottom: '16px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div className={styles.walletBalanceRow}>
+                            <div className={styles.walletBalanceHeader}>
                                 <Wallet size={16} color="var(--primary)" />
-                                <span style={{ fontSize: '14px', color: 'var(--foreground)' }}>
-                                    Wallet Balance
+                                <span className={styles.walletBalanceLabel}>
+                                    Your Wallet (Base)
                                 </span>
                             </div>
-                            <div style={{ display: 'flex', gap: '16px', fontSize: '13px' }}>
-                                <span>
-                                    <strong style={{ color: 'var(--primary)' }}>{usdcBalance?.formatted ? Number(usdcBalance.formatted).toFixed(2) : "0.00"}</strong> USDC
-                                </span>
-                                <span>
-                                    <strong style={{ color: 'var(--primary)' }}>{ethBalance?.formatted ? Number(ethBalance.formatted).toFixed(4) : "0.0000"}</strong> ETH
-                                </span>
+                            <div className={styles.walletBalanceGrid}>
+                                <div className={styles.balanceItem}>
+                                    <span className={styles.balanceValue}>
+                                        {isLoadingUsdc ? "..." : (usdcBalance?.formatted ? Number(usdcBalance.formatted).toFixed(2) : "0.00")}
+                                        <span className={styles.balanceUnit}>USDC</span>
+                                    </span>
+                                </div>
+                                <div className={styles.balanceItem}>
+                                    <span className={styles.balanceValue}>
+                                        {isLoadingEth ? "..." : (ethBalance?.formatted ? Number(ethBalance.formatted).toFixed(4) : "0.0000")}
+                                        <span className={styles.balanceUnit}>ETH</span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -389,13 +401,13 @@ export function VaultActions() {
                                 </div>
                             </div>
                             <div className={styles.infoRow}>
-                                <span>Agent APR (JSON Live)</span>
+                                <span>Agent APR</span>
                                 <span className={styles.infoValue}>{globalStats.apr}%</span>
                             </div>
                             <div className={styles.infoRow}>
                                 <span>Estimated daily yield</span>
                                 <span className={styles.infoValue}>
-                                    ${depositAmount ? (Number(depositAmount) * 0.013).toFixed(2) : "0.00"}
+                                    ${dailyYieldValue}
                                 </span>
                             </div>
                             {renderActionButton("deposit")}

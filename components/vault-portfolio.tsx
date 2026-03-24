@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import { formatUnits } from "viem";
-import { AI_AGENT_ADDRESS, POLYBOND_STRATEGY_ADDRESS } from "@/config/contracts";
+import { AI_AGENT_ADDRESS, POLYBOND_STRATEGY_ADDRESS, CHAIN_ID } from "@/config/contracts";
 import { POLYBOND_POOL_ABI } from "@/config/abi";
 import { useSafe } from "./safe-context";
 import styles from "./vault-portfolio.module.css";
@@ -36,6 +36,7 @@ export function VaultPortfolio() {
         abi: POLYBOND_POOL_ABI,
         functionName: "shares",
         args: [address as `0x${string}`],
+        chainId: CHAIN_ID,
         query: {
             enabled: !!address,
             refetchInterval: 10000,

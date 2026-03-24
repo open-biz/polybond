@@ -292,6 +292,52 @@
     border-radius: 20px;
 }
 
+.walletBalanceRow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(124, 184, 124, 0.05);
+}
+
+.walletBalanceHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.walletBalanceLabel {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(138, 155, 142, 0.6);
+}
+
+.walletBalanceGrid {
+    display: flex;
+    gap: 20px;
+}
+
+.balanceItem {
+    display: flex;
+    flex-direction: column;
+}
+
+.balanceValue {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.balanceUnit {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(138, 155, 142, 0.5);
+    margin-left: 4px;
+}
+
 @media (max-width: 768px) {
     .grid {
         grid-template-columns: 1fr;
