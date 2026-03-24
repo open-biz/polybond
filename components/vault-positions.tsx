@@ -8,6 +8,7 @@ interface Position {
     id: string;
     slug?: string;
     market: string;
+    quantity?: number;
     entryPrice: string;
     currentValue: string;
     expectedReturn: string;
@@ -54,6 +55,7 @@ export function VaultPositions() {
                     <thead>
                         <tr>
                             <th>Market</th>
+                            <th>Qty</th>
                             <th>Entry</th>
                             <th>Current</th>
                             <th>Return</th>
@@ -65,7 +67,7 @@ export function VaultPositions() {
                     <tbody>
                         {isLoading ? (
                             <tr>
-                                <td colSpan={7} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
+                                <td colSpan={8} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
                                     Loading active positions...
                                 </td>
                             </tr>
@@ -83,6 +85,7 @@ export function VaultPositions() {
                                         {pos.market}
                                     </a>
                                 </td>
+                                <td className={styles.mono}>{pos.quantity ? pos.quantity.toLocaleString() : "-"}</td>
                                 <td className={styles.mono}>{pos.entryPrice}</td>
                                 <td className={styles.mono}>{pos.currentValue}</td>
                                 <td className={styles.returnCell}>{pos.expectedReturn}</td>
@@ -115,7 +118,7 @@ export function VaultPositions() {
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan={7} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
+                                <td colSpan={8} style={{ textAlign: "center", padding: "32px", color: "rgba(138, 155, 142, 0.5)" }}>
                                     No active positions yet. Deposit USDC to start earning yield.
                                 </td>
                             </tr>

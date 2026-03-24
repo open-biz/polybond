@@ -1,7 +1,7 @@
 {
     "baseYield": 297,
     "compoundedYield": 1850,
-    "tvl": 25000,
+    "tvl": 500,
     "totalCycles": 12,
-    "octantDonated": 1250
+    "octantDonated": 5
 }
