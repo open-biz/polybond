@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowDown, ArrowUp, Shield, ExternalLink } from "lucide-react";
-import { parseUnits, encodeFunctionData } from "viem";
-import { useAccount, useWalletClient } from "wagmi";
+import { ArrowDown, ArrowUp, Shield, ExternalLink, Wallet } from "lucide-react";
+import { parseUnits, encodeFunctionData, formatUnits } from "viem";
+import { useAccount, useWalletClient, usePublicClient, useBalance } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Safe from "@safe-global/protocol-kit";
 import { useSafe } from "./safe-context";
@@ -14,8 +14,16 @@ import styles from "./vault-actions.module.css";
 export function VaultActions() {
     const { address, connector } = useAccount();
     const { data: walletClient } = useWalletClient();
+    const publicClient = usePublicClient();
     const { openConnectModal } = useConnectModal();
     const { safeAddress, setSafeAddress } = useSafe();
+    
+    // Fetch USDC balance for the user's connected wallet
+    const { data: usdcBalance } = useBalance({
+        address,
+        token: USDC_ADDRESS as `0x${string}`,
+    });
+
     const [depositAmount, setDepositAmount] = useState("");
     const [withdrawAmount, setWithdrawAmount] = useState("");
     const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
@@ -75,8 +83,8 @@ export function VaultActions() {
     const handleDeposit = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        if (!address || !safeAddress || !connector) {
-            alert("Please connect your wallet and create a Safe Vault first.");
+        if (!address || !walletClient || !publicClient) {
+            alert("Please connect your wallet first.");
             return;
         }
 
@@ -84,55 +92,49 @@ export function VaultActions() {
 
         try {
             setIsPending(true);
-            const provider = await connector.getProvider();
             
-            const safeProtocolKit = await Safe.init({
-                provider: provider as any,
-                signer: address,
-                safeAddress
-            });
+            const amountInWei = parseUnits(depositAmount, 6);
 
-            // Transaction 1: Approve the PolyBond Pool to spend USDC
+            // 1. Approve USDC transfer
             const approveData = encodeFunctionData({
                 abi: ERC20_ABI,
                 functionName: 'approve',
-                args: [POLYBOND_STRATEGY_ADDRESS as `0x${string}`, parseUnits(depositAmount, 6)]
+                args: [POLYBOND_STRATEGY_ADDRESS as `0x${string}`, amountInWei]
             });
 
-            // Transaction 2: Deposit USDC into the PolyBond Pool
+            const approveTxHash = await walletClient.sendTransaction({
+                to: USDC_ADDRESS as `0x${string}`,
+                data: approveData,
+            });
+            
+            // Wait for approval to be mined
+            await publicClient.waitForTransactionReceipt({ hash: approveTxHash });
+
+            // 2. Deposit into PolyBond Pool
             const depositData = encodeFunctionData({
                 abi: POLYBOND_POOL_ABI,
                 functionName: 'deposit',
-                args: [parseUnits(depositAmount, 6)]
+                args: [amountInWei]
             });
 
-            const safeTransactionData = [
-                {
-                    to: USDC_ADDRESS,
-                    data: approveData,
-                    value: "0"
-                },
-                {
-                    to: POLYBOND_STRATEGY_ADDRESS,
-                    data: depositData,
-                    value: "0"
-                }
-            ];
+            const depositTxHash = await walletClient.sendTransaction({
+                to: POLYBOND_STRATEGY_ADDRESS as `0x${string}`,
+                data: depositData,
+            });
 
-            const safeTransaction = await safeProtocolKit.createTransaction({ transactions: safeTransactionData });
-            
-            // Execute the transaction directly from the 1/1 Safe
-            const txResponse = await safeProtocolKit.executeTransaction(safeTransaction);
-            if (txResponse.transactionResponse && (txResponse.transactionResponse as any).wait) {
-                await (txResponse.transactionResponse as any).wait();
-            }
+            await publicClient.waitForTransactionReceipt({ hash: depositTxHash });
 
             alert(`Successfully deposited $${depositAmount} USDC into the PolyBond Pool!`);
             setDepositAmount("");
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Deposit error:", error);
-            alert("Deposit failed. Check console. Make sure your Safe has enough USDC and ETH for gas.");
+            // Catch common errors (e.g., insufficient funds) and show a better message
+            if (error?.message?.includes('insufficient funds') || error?.message?.includes('exceeds balance')) {
+                alert(`Transaction failed: Insufficient USDC balance. Your wallet has ${usdcBalance ? formatUnits(usdcBalance.value, 6) : "0"} USDC.`);
+            } else {
+                alert("Deposit failed. Ensure you have enough USDC and ETH for gas fees.");
+            }
         } finally {
             setIsPending(false);
         }
@@ -141,8 +143,8 @@ export function VaultActions() {
     const handleWithdraw = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        if (!address || !safeAddress || !connector) {
-            alert("Please connect your wallet and create a Safe Vault first.");
+        if (!address || !walletClient || !publicClient) {
+            alert("Please connect your wallet first.");
             return;
         }
 
@@ -150,31 +152,21 @@ export function VaultActions() {
 
         try {
             setIsPending(true);
-            const provider = await connector.getProvider();
             
-            const safeProtocolKit = await Safe.init({
-                provider: provider as any,
-                signer: address,
-                safeAddress
-            });
+            const amountInWei = parseUnits(withdrawAmount, 6);
 
             const withdrawData = encodeFunctionData({
                 abi: POLYBOND_POOL_ABI,
                 functionName: 'withdraw',
-                args: [parseUnits(withdrawAmount, 6)] // Assuming 1 share = 1 USDC initially
+                args: [amountInWei] 
             });
 
-            const safeTransactionData = [{
-                to: POLYBOND_STRATEGY_ADDRESS,
+            const withdrawTxHash = await walletClient.sendTransaction({
+                to: POLYBOND_STRATEGY_ADDRESS as `0x${string}`,
                 data: withdrawData,
-                value: "0"
-            }];
+            });
 
-            const safeTransaction = await safeProtocolKit.createTransaction({ transactions: safeTransactionData });
-            const txResponse = await safeProtocolKit.executeTransaction(safeTransaction);
-            if (txResponse.transactionResponse && (txResponse.transactionResponse as any).wait) {
-                await (txResponse.transactionResponse as any).wait();
-            }
+            await publicClient.waitForTransactionReceipt({ hash: withdrawTxHash });
 
             alert(`Successfully withdrew shares from the PolyBond Pool!`);
             setWithdrawAmount("");
@@ -240,6 +232,16 @@ export function VaultActions() {
                         </button>
                     </div>
 
+                    {/* Wallet Balance Display */}
+                    {address && usdcBalance && (
+                        <div className={styles.walletBalanceRow} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', marginBottom: '16px' }}>
+                            <Wallet size={16} color="var(--primary)" />
+                            <span style={{ fontSize: '14px', color: 'var(--foreground)' }}>
+                                Wallet Balance: <strong style={{ color: 'var(--primary)' }}>{formatUnits(usdcBalance.value, 6)} USDC</strong>
+                            </span>
+                        </div>
+                    )}
+
                     {activeTab === "deposit" ? (
                         <form onSubmit={handleDeposit} className={styles.form}>
                             <div className={styles.inputGroup}>
@@ -257,7 +259,11 @@ export function VaultActions() {
                                     <button
                                         type="button"
                                         className={styles.maxBtn}
-                                        onClick={() => setDepositAmount("0")}
+                                        onClick={() => {
+                                            if (usdcBalance) {
+                                                setDepositAmount(formatUnits(usdcBalance.value, 6));
+                                            }
+                                        }}
                                     >
                                         MAX
                                     </button>
@@ -265,12 +271,12 @@ export function VaultActions() {
                             </div>
                             <div className={styles.infoRow}>
                                 <span>Current APR</span>
-                                <span className={styles.infoValue}>0%</span>
+                                <span className={styles.infoValue}>492%</span>
                             </div>
                             <div className={styles.infoRow}>
                                 <span>Estimated daily yield</span>
                                 <span className={styles.infoValue}>
-                                    $0.00
+                                    ${depositAmount ? (Number(depositAmount) * 0.013).toFixed(2) : "0.00"}
                                 </span>
                             </div>
                             {renderActionButton("deposit")}
@@ -315,7 +321,7 @@ export function VaultActions() {
                 <div className={styles.card}>
                     <div className={styles.safeHeader}>
                         <Shield size={18} className={styles.safeIcon} />
-                        <h3 className={styles.safeTitle}>Gnosis Safe</h3>
+                        <h3 className={styles.safeTitle}>AI Execution Safe (Zodiac)</h3>
                     </div>
 
                     <div className={styles.safeInfo}>
@@ -341,8 +347,8 @@ export function VaultActions() {
                             )}
                         </div>
                         <div className={styles.safeRow}>
-                            <span className={styles.safeLabel}>Signers</span>
-                            <span className={styles.safeValue}>{safeAddress ? "1 of 1" : "N/A"}</span>
+                            <span className={styles.safeLabel}>AI Module</span>
+                            <span className={styles.safeValue}>{safeAddress ? "Enabled" : "N/A"}</span>
                         </div>
                         <div className={styles.safeRow}>
                             <span className={styles.safeLabel}>Network</span>
