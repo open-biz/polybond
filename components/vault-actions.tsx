@@ -23,13 +23,21 @@ export function VaultActions() {
         address,
         chainId: CHAIN_ID,
     });
+    const ethBalanceFormatted = ethBalance ? formatUnits(ethBalance.value, ethBalance.decimals) : undefined;
 
     // Fetch USDC balance for the user's connected wallet
-    const { data: usdcBalance, isLoading: isLoadingUsdc } = useBalance({
-        address,
-        token: USDC_ADDRESS as `0x${string}`,
+    const { data: usdcBalanceRaw, isLoading: isLoadingUsdc } = useReadContract({
+        address: USDC_ADDRESS as `0x${string}`,
+        abi: ERC20_ABI,
+        functionName: "balanceOf",
+        args: [address as `0x${string}`],
         chainId: CHAIN_ID,
+        query: {
+            enabled: !!address,
+            refetchInterval: 10000,
+        }
     });
+    const usdcBalance = usdcBalanceRaw !== undefined ? { formatted: formatUnits(usdcBalanceRaw as bigint, 6) } : undefined;
 
     // Fetch user's vault shares
     const { data: sharesData } = useReadContract({
@@ -365,7 +373,7 @@ export function VaultActions() {
                                 </div>
                                 <div className={styles.balanceItem}>
                                     <span className={styles.balanceValue}>
-                                        {isLoadingEth ? "..." : (ethBalance?.formatted ? Number(ethBalance.formatted).toFixed(4) : "0.0000")}
+                                        {isLoadingEth ? "..." : (ethBalanceFormatted ? Number(ethBalanceFormatted).toFixed(4) : "0.0000")}
                                         <span className={styles.balanceUnit}>ETH</span>
                                     </span>
                                 </div>
