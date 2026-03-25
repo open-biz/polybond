@@ -114,6 +114,18 @@ export default function StrategyPage() {
                 </div>
             </section>
 
+            {/* Live Agent Feed Teaser */}
+            <section className={styles.feedTeaser}>
+                <div className={styles.teaserContent}>
+                    <span className={styles.label}>Live Execution</span>
+                    <h2 className={styles.sectionTitle}>Live Agent Activity</h2>
+                    <p className={styles.teaserDesc}>
+                        Monitor the AI agent's real-time analysis and bonding activity across active disputes.
+                    </p>
+                    <Link href="/disputes" className={styles.secondaryAction}>View Full Disputes Feed</Link>
+                </div>
+            </section>
+
             {/* CTA Section */}
             <section className={styles.ctaSection}>
                 <h2 className={styles.ctaTitle}>Start harvesting alpha</h2>

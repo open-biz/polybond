@@ -279,6 +279,46 @@
     color: rgba(232, 237, 233, 0.6);
 }
 
+/* ===== Feed Teaser ===== */
+
+.feedTeaser {
+    position: relative;
+    z-index: 10;
+    max-width: 1000px;
+    margin: 0 auto 100px;
+    padding: 0 24px;
+}
+
+.teaserContent {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.teaserDesc {
+    font-size: 16px;
+    color: #8a9b8e;
+    max-width: 500px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+}
+
+.secondaryAction {
+    display: inline-block;
+    padding: 10px 24px;
+    border-radius: 100px;
+    border: 1px solid #7cb87c;
+    color: #7cb87c;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.secondaryAction:hover {
+    background: #7cb87c;
+    color: #0a0f0b;
+}
+
 /* ===== CTA Section ===== */
 
 .ctaSection {
