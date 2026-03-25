@@ -56,8 +56,7 @@ export default function DisputesPage() {
         }
         if (searchQuery) {
             filtered = filtered.filter(m => 
-                m.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                m.category.toLowerCase().includes(searchQuery.toLowerCase())
+                m.question.toLowerCase().includes(searchQuery.toLowerCase())
             );
         }
         setFilteredMarkets(filtered);
@@ -136,7 +135,7 @@ export default function DisputesPage() {
                         <Search className={styles.searchIcon} size={18} />
                         <input 
                             type="text" 
-                            placeholder="Search by question or category..." 
+                            placeholder="Search by question..." 
                             className={styles.searchInput}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -161,22 +160,20 @@ export default function DisputesPage() {
                             <tr>
                                 <th>Market Question</th>
                                 <th>Status</th>
-                                <th>Category</th>
                                 <th>Volume</th>
-                                <th>UMA Bond</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {isLoading ? (
                                 <tr>
-                                    <td colSpan={6} className={styles.loadingCell}>
+                                    <td colSpan={4} className={styles.loadingCell}>
                                         Initializing Alpha Feed...
                                     </td>
                                 </tr>
                             ) : filteredMarkets.length === 0 ? (
                                 <tr>
-                                    <td colSpan={6} className={styles.emptyCell}>
+                                    <td colSpan={4} className={styles.emptyCell}>
                                         No disputes match your criteria.
                                     </td>
                                 </tr>
@@ -198,9 +195,7 @@ export default function DisputesPage() {
                                                     {market.status}
                                                 </span>
                                             </td>
-                                            <td className={styles.dimText}>{market.category}</td>
                                             <td className={styles.priceText}>{market.volume}</td>
-                                            <td className={styles.priceText}>{market.lockInPrice}</td>
                                             <td>
                                                 <a 
                                                     href={url}

@@ -11,24 +11,66 @@ class UMAClient:
         Fetches markets from Polymarket that are currently in a disputed state via UMA.
         """
         try:
-            # 1. Try fetching 'disputed' markets
-            url = f"{self.base_url}/markets?uma_resolution_status=disputed&active=true&limit=20"
+            # 1. Try fetching 'disputed' markets - Increase limit to get a better pool for filtering
+            url = f"{self.base_url}/markets?uma_resolution_status=disputed&active=true&closed=false&limit=50"
             resp = requests.get(url)
             if resp.status_code == 200:
                 markets = resp.json()
                 if markets:
-                    print(f"Found {len(markets)} disputed markets via Gamma API")
-                    return markets
+                    active_disputes = []
+                    for m in markets:
+                        prices_raw = m.get('outcomePrices', '[]')
+                        is_resolved = False
+                        
+                        try:
+                            prices = json.loads(prices_raw) if isinstance(prices_raw, str) else prices_raw
+                            if prices == ["0", "1"] or prices == ["1", "0"] or prices == [0, 1] or prices == [1, 0]:
+                                is_resolved = True
+                        except: pass
+                        
+                        # Robustly check closed/active even if they are strings
+                        closed_val = m.get('closed')
+                        is_closed = str(closed_val).lower() == "true" if closed_val is not None else False
+                        
+                        active_val = m.get('active')
+                        is_active = str(active_val).lower() == "true" if active_val is not None else True
+                        
+                        if not is_closed and is_active and not is_resolved:
+                            active_disputes.append(m)
 
-            # 2. Fallback to 'proposed' markets (arbitrage opportunities before they are disputed)
+                    if active_disputes:
+                        print(f"Found {len(active_disputes)} active disputed markets via Gamma API")
+                        return active_disputes[:20] # Return max 20 for frontend
+
+            # 2. Fallback to 'proposed' markets
             print("No 'disputed' markets found. Checking for 'proposed' markets...")
-            url = f"{self.base_url}/markets?uma_resolution_status=proposed&active=true&limit=20"
+            url = f"{self.base_url}/markets?uma_resolution_status=proposed&active=true&closed=false&limit=50"
             resp = requests.get(url)
             if resp.status_code == 200:
                 markets = resp.json()
                 if markets:
-                    print(f"Found {len(markets)} proposed markets via Gamma API")
-                    return markets
+                    active_proposed = []
+                    for m in markets:
+                        prices_raw = m.get('outcomePrices', '[]')
+                        is_resolved = False
+                        try:
+                            prices = json.loads(prices_raw) if isinstance(prices_raw, str) else prices_raw
+                            if prices == ["0", "1"] or prices == ["1", "0"] or prices == [0, 1] or prices == [1, 0]:
+                                is_resolved = True
+                        except: pass
+                        
+                        closed_val = m.get('closed')
+                        is_closed = str(closed_val).lower() == "true" if closed_val is not None else False
+                        
+                        active_val = m.get('active')
+                        is_active = str(active_val).lower() == "true" if active_val is not None else True
+                        
+                        if not is_closed and is_active and not is_resolved:
+                            active_proposed.append(m)
+
+                    if active_proposed:
+                        print(f"Found {len(active_proposed)} active proposed markets via Gamma API")
+                        return active_proposed[:20]
 
             return []
         except Exception as e:
