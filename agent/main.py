@@ -66,6 +66,8 @@ class PolyBondAgent:
                 "id": m.get('id'),
                 "slug": slug,
                 "question": m.get('question'),
+                "category": m.get('groupItemTitle') or "General",
+                "volume": f"${float(m.get('volumeNum', 0)):,.0f}",
                 "lockInPrice": f"${float(m.get('umaBond', 500)):,.0f} Bond",
                 "status": fe_status,
                 "timeAgo": "Live"
@@ -76,6 +78,8 @@ class PolyBondAgent:
             output.append({
                 "id": "none",
                 "question": "Scanning for new UMA disputes...",
+                "category": "Scanning",
+                "volume": "N/A",
                 "lockInPrice": "N/A",
                 "status": "monitoring",
                 "timeAgo": "Now"

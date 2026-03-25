@@ -3,6 +3,8 @@
     "id": "254671",
     "slug": "trump-sc-speech-what-will-he-say-most",
     "question": "Will Trump mention Biden the most in South Carolina speech?",
+    "category": "Joe Biden",
+    "volume": "$7,088",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -11,6 +13,8 @@
     "id": "254678",
     "slug": "trump-sc-speech-what-will-he-say-most",
     "question": "Will Trump mention Border the most in South Carolina speech?",
+    "category": "Border",
+    "volume": "$11,092",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -19,6 +23,8 @@
     "id": "665228",
     "slug": "will-hezbollah-disarm-by-march-31",
     "question": "Will Hezbollah disarm by March 31?",
+    "category": "March 31",
+    "volume": "$825,028",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -27,6 +33,8 @@
     "id": "676795",
     "slug": "ipos-before-2027",
     "question": "SpaceX (Space Exploration Technologies Corp.) IPO before 2027?",
+    "category": "SpaceX",
+    "volume": "$435,574",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -35,6 +43,8 @@
     "id": "677397",
     "slug": "will-israel-launch-a-major-ground-offensive-in-lebanon-by-march-31",
     "question": "Will Israel launch a major ground offensive in Lebanon by March 31?",
+    "category": "General",
+    "volume": "$64,146,753",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -43,6 +53,8 @@
     "id": "678783",
     "slug": "how-many-different-countries-will-the-us-strike-in-2026",
     "question": "Will the US strike 14 countries in 2026?",
+    "category": "14",
+    "volume": "$7,504",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -51,6 +63,8 @@
     "id": "716370",
     "slug": "turnout-in-2025-honduran-general-election",
     "question": "Will turnout in the 2025 Honduran general election be between 60% and 65%?",
+    "category": "60-65%",
+    "volume": "$363,533",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -59,6 +73,8 @@
     "id": "893353",
     "slug": "elc-por-ips-2026-01-04",
     "question": "Will Portsmouth FC win on 2026-01-04?",
+    "category": "Portsmouth FC",
+    "volume": "$62,424",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -67,6 +83,8 @@
     "id": "909456",
     "slug": "turnout-in-2025-honduran-general-election-smaller-brackets",
     "question": "Will turnout in the 2025 Honduran general election be between 58% and 59%?",
+    "category": "58-59%",
+    "volume": "$0",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -75,6 +93,8 @@
     "id": "996893",
     "slug": "epstein-client-list-released-in-2025-372",
     "question": "Epstein client list released by June 30?",
+    "category": "June 30",
+    "volume": "$441,995",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -83,6 +103,8 @@
     "id": "1068702",
     "slug": "trump-eliminates-capital-gains-tax-on-crypto-in-2025",
     "question": "Trump eliminates capital gains tax on crypto before 2027?",
+    "category": "December 31, 2026",
+    "volume": "$0",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -91,6 +113,8 @@
     "id": "1076685",
     "slug": "us-recognize-somaliland-in-2025-737",
     "question": "US recognize Somaliland by June 30, 2026?",
+    "category": "June 30",
+    "volume": "$0",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -99,6 +123,8 @@
     "id": "1176221",
     "slug": "which-countries-will-trump-make-new-trade-deals-with-before-2027-921",
     "question": "U.S. agrees to a new trade deal with \"Taiwan\" before 2027?",
+    "category": "Taiwan",
+    "volume": "$28,163",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -107,6 +133,8 @@
     "id": "1192579",
     "slug": "marseille-mayor-election-winner",
     "question": "Will Beno\u00eet Payan win the Marseille mayor election?",
+    "category": "Beno\u00eet Payan",
+    "volume": "$190,974",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -115,6 +143,8 @@
     "id": "1213456",
     "slug": "cbb-cark-nal-2026-01-24",
     "question": "Central Arkansas Bears vs. North Alabama Lions",
+    "category": "General",
+    "volume": "$0",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -123,6 +153,8 @@
     "id": "1272554",
     "slug": "of-seats-won-by-pt-in-2026-thailand-legislative-election",
     "question": "Will the Pheu Thai Party (PT) win 110 or more seats in the 2026 Thai legislative election?",
+    "category": "110+",
+    "volume": "$135,500",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -131,6 +163,8 @@
     "id": "1570802",
     "slug": "what-will-trump-say-this-week-march-22",
     "question": "Will Trump say \"Nancy\" or \"Pelosi\" this week? (March 22)",
+    "category": "Nancy / Pelosi",
+    "volume": "$132,448",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -139,6 +173,8 @@
     "id": "1581663",
     "slug": "dota2-bb4-ty-2026-03-14",
     "question": "Total Kills Over/Under 45.5 in Game 2?",
+    "category": "Total Kills Over/Under 45.5 in Game 2?",
+    "volume": "$33,704",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -147,6 +183,8 @@
     "id": "1628472",
     "slug": "iran-military-action-against-israel-on",
     "question": "Will Iran conduct a military action against Israel on March 19, 2026?",
+    "category": "March 19",
+    "volume": "$1,872,937",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"
@@ -155,6 +193,8 @@
     "id": "1633167",
     "slug": "israel-military-action-in-gaza-on",
     "question": "Will Israel take military action in Gaza on March 21, 2026?",
+    "category": "March 21",
+    "volume": "$187,374",
     "lockInPrice": "$500 Bond",
     "status": "disputed",
     "timeAgo": "Live"

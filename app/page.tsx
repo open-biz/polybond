@@ -30,6 +30,7 @@ export default function Home() {
           
           <nav className={styles.nav}>
             <Link href="/vault" className={styles.navLink}>Vault</Link>
+            <Link href="/disputes" className={styles.navLink}>Disputes</Link>
             <Link href="#disputes" className={styles.navLink}>Feed</Link>
           </nav>
 
