@@ -55,13 +55,20 @@ class PolyBondAgent:
             if status == "disputed": fe_status = "disputed"
             elif status == "proposed": fe_status = "bonding"
             
+            # Use event slug if available, fallback to market slug
+            event_slug = None
+            if m.get('events') and len(m.get('events')) > 0:
+                event_slug = m.get('events')[0].get('slug')
+            
+            slug = event_slug or m.get('slug')
+            
             output.append({
                 "id": m.get('id'),
-                "slug": m.get('slug'),
+                "slug": slug,
                 "question": m.get('question'),
                 "lockInPrice": f"${float(m.get('umaBond', 500)):,.0f} Bond",
                 "status": fe_status,
-                "timeAgo": "Live" # In a real app, calculate diff from updatedAt
+                "timeAgo": "Live"
             })
             
         # If no markets, add a monitoring entry

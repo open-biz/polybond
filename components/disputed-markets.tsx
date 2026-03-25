@@ -40,15 +40,26 @@ export function DisputedMarkets() {
     }, []);
 
     useEffect(() => {
-        if (markets.length === 0) return;
+        if (markets.length === 0) {
+            setVisibleCount(0);
+            return;
+        }
+        
+        // Start with 1 visible immediately
+        setVisibleCount(1);
+        
         const timer = setInterval(() => {
             setVisibleCount((prev) => {
-                if (prev >= markets.length) return prev;
+                if (prev >= markets.length) {
+                    clearInterval(timer);
+                    return prev;
+                }
                 return prev + 1;
             });
-        }, 800);
+        }, 400); // Faster interval for better UX
+        
         return () => clearInterval(timer);
-    }, [markets.length]);
+    }, [markets]);
 
     return (
         <section className={styles.section}>
@@ -65,7 +76,7 @@ export function DisputedMarkets() {
                 </div>
 
                 <div className={styles.list}>
-                    {isLoading || (markets.length > 0 && visibleCount === 0) ? (
+                    {isLoading ? (
                         <div style={{ textAlign: "center", padding: "48px 24px", color: "rgba(138, 155, 142, 0.5)" }}>
                             [AGENT] Initializing MoonPay CLI... Scanning Polymarket order books for active UMA disputes...
                         </div>
@@ -76,12 +87,12 @@ export function DisputedMarkets() {
                     ) : (
                         markets.slice(0, visibleCount).map((market, idx) => {
                             const config = STATUS_CONFIG[market.status] || { label: market.status, className: styles.statusMonitoring };
-                            const isMonitoring = market.status === "monitoring";
+                            const isMonitoring = market.status === "monitoring" || market.id === "none";
                             
                             return (
                                 <a
                                     key={market.id + idx}
-                                    href={isMonitoring ? undefined : `https://polymarket.com/event/${market.slug || market.id}`}
+                                    href={isMonitoring ? undefined : `https://polymarket.com/market/${market.slug || market.id}`}
                                     target={isMonitoring ? undefined : "_blank"}
                                     rel={isMonitoring ? undefined : "noopener noreferrer"}
                                     className={styles.item}
