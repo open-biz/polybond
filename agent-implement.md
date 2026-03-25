@@ -25,10 +25,10 @@ While `rs-clob-client` is excellent, using Python is the most feasible and strat
 The Python agent will run as a continuous background process with the following lifecycle:
 
 ### Phase A: Market Discovery & Reasoning (The LLM Brain)
-1. The script uses the MoonPay MCP Server to gather macroeconomic context (e.g., current crypto prices).
-2. The script uses `py-clob-client` to pull a list of Polymarket events that are currently in the "UMA Dispute" phase.
-3. It packages this data and sends a prompt to the **NVIDIA Qwen 122b endpoint** (with `enable_thinking: True`).
-4. The LLM analyzes the dispute. If it determines the "Spite Dispute" is frivolous and the 97¢ spread is profitable, it returns a structured JSON decision to execute a trade.
+1. **UMA Subgraph Query:** The script queries the UMA Protocol Subgraph on Polygon (`https://thegraph.com/hosted-service/subgraph/umaprotocol/polygon-lsp` or the Optimistic Oracle subgraph) via GraphQL. It filters for recent oracle requests where a proposal was made but subsequently disputed (`isDisputed: true` or checking for `DisputePrice` events). This provides the definitive, raw list of current "spite disputes".
+2. **Context Enrichment:** The script uses `py-clob-client` to map the UMA `identifier` and `ancillaryData` back to the specific Polymarket order book and uses the MoonPay MCP Server to gather macroeconomic context (e.g., current crypto prices).
+3. **AI Analysis:** It packages this data and sends a prompt to the **NVIDIA Qwen 122b endpoint** (with `enable_thinking: True`).
+4. **Decision:** The LLM analyzes the dispute's `ancillaryData` (which contains the resolution logic like `p1`, `p2`, `p3`, `p4`) and the actual real-world outcome. If it determines the dispute is frivolous and the 97¢ spread is profitable, it returns a structured JSON decision to execute a trade.
 
 ### Phase B: Secure Execution (OpenWallet)
 1. The Python script takes the LLM's decision and constructs a Polymarket order payload.
