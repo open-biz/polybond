@@ -40,6 +40,17 @@ The Python agent will run as a continuous background process with the following 
 1. The script submits the signed order to the Polymarket CLOB API.
 2. The central Gnosis Safe (acting as the AI Execution Layer via Zodiac) executes the trade using the pooled USDC from the `PolyBondPool` smart contract.
 
+### Phase D: State Sync & Frontend Updates
+1. After completing its cycle, the agent aggregates its performance metrics (total trades, current APR, yield earned).
+2. It writes these metrics directly to the `public/data/global-stats.json` and `public/data/portfolio.json` files within the Next.js repository.
+3. This ensures the frontend dashboard always reflects the live, "brain" state of the AI agent without requiring a dedicated backend database.
+
 ## 5. Setup & Secrets
 * The NVIDIA API key is securely stored in `.env` and excluded from source control.
 * OpenWallet policies will be defined locally to restrict the agent's financial blast radius.
+
+## 6. Deployment & Autonomous Execution
+To achieve true autonomy, the agent is designed to run completely unsupervised:
+* **The Execution Loop:** The Python script runs as a continuous daemon (using an infinite `while True:` loop with a `time.sleep(300)` for a 5-minute cycle, or via a `cron` job).
+* **Process Management:** In production, it should be managed by `systemd`, `Supervisor`, or packaged in a Docker container with `--restart unless-stopped`.
+* **Autonomy vs. Safety:** Because the OpenWallet policy engine cryptographically restricts the agent's actions (e.g., maximum daily spend, allowed contracts), we can safely let it run autonomously 24/7. Even if the LLM hallucinates, it cannot violate the hardcoded financial constraints.
