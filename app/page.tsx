@@ -58,6 +58,12 @@ export default function Home() {
           <span className={styles.poweredDot} />
           Powered by UMA &amp; Polymarket • Built on Base
         </p>
+        
+        <div className={styles.agentsLinkWrapper}>
+          <Link href="https://github.com/vovk/polybond/blob/main/SKILLS.md" target="_blank" className={styles.agentsLink}>
+            For Agents: Read the documentation
+          </Link>
+        </div>
       </section>
 
       {/* Vault Dashboard */}
