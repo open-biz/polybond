@@ -1,10 +1,62 @@
 [
-    {
-        "id": "677397",
-        "slug": "will-israel-launch-a-major-ground-offensive-in-lebanon-by-march-31",
-        "question": "Will Israel launch a major ground offensive in Lebanon by March 31?",
-        "lockInPrice": "$0.990",
-        "status": "bonding",
-        "timeAgo": "Just now"
-    }
+  {
+    "id": "677397",
+    "slug": "will-israel-launch-a-major-ground-offensive-in-lebanon-by-march-31",
+    "question": "Will Israel launch a major ground offensive in Lebanon by March 31?",
+    "lockInPrice": "$0.990",
+    "status": "bonding",
+    "timeAgo": "Just now",
+    "category": "Politics",
+    "volume": "$12.4M",
+    "umaIdentifier": "YES_OR_NO_QUERY",
+    "potentialYield": "1.01%"
+  },
+  {
+    "id": "678122",
+    "slug": "will-spacex-starship-flight-6-reach-orbit",
+    "question": "Will SpaceX Starship Flight 6 reach orbit?",
+    "lockInPrice": "$0.975",
+    "status": "disputed",
+    "timeAgo": "12m ago",
+    "category": "Science",
+    "volume": "$4.1M",
+    "umaIdentifier": "YES_OR_NO_QUERY",
+    "potentialYield": "2.56%"
+  },
+  {
+    "id": "679004",
+    "slug": "will-the-fed-cut-rates-by-50bps-in-december",
+    "question": "Will the Fed cut rates by 50bps in December?",
+    "lockInPrice": "$0.982",
+    "status": "bonding",
+    "timeAgo": "45m ago",
+    "category": "Economy",
+    "volume": "$28.9M",
+    "umaIdentifier": "YES_OR_NO_QUERY",
+    "potentialYield": "1.83%"
+  },
+  {
+    "id": "680155",
+    "slug": "will-gta-6-be-delayed-to-2026",
+    "question": "Will GTA 6 be delayed to 2026?",
+    "lockInPrice": "$0.968",
+    "status": "disputed",
+    "timeAgo": "2h ago",
+    "category": "Entertainment",
+    "volume": "$1.2M",
+    "umaIdentifier": "YES_OR_NO_QUERY",
+    "potentialYield": "3.31%"
+  },
+  {
+    "id": "681290",
+    "slug": "will-donald-trump-be-sentenced-before-2025",
+    "question": "Will Donald Trump be sentenced before 2025?",
+    "lockInPrice": "$0.988",
+    "status": "bonding",
+    "timeAgo": "4h ago",
+    "category": "Politics",
+    "volume": "$45.6M",
+    "umaIdentifier": "YES_OR_NO_QUERY",
+    "potentialYield": "1.21%"
+  }
 ]
