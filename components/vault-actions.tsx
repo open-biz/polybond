@@ -3,20 +3,21 @@
 import { useState, useEffect } from "react";
 import { ArrowDown, ArrowUp, Shield, ExternalLink, Wallet, Info, X, AlertTriangle } from "lucide-react";
 import { parseUnits, encodeFunctionData, formatUnits } from "viem";
+import { base } from "viem/chains";
 import { useAccount, useWalletClient, usePublicClient, useBalance, useReadContract } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import Safe from "@safe-global/protocol-kit";
-import { useSafe } from "./safe-context";
-import { USDC_ADDRESS, POLYBOND_STRATEGY_ADDRESS, CHAIN_ID } from "@/config/contracts";
+import { USDC_ADDRESS, POLYBOND_STRATEGY_ADDRESS, CHAIN_ID, AI_AGENT_ADDRESS } from "@/config/contracts";
 import { ERC20_ABI, POLYBOND_POOL_ABI } from "@/config/abi";
 import styles from "./vault-actions.module.css";
 
 export function VaultActions() {
-    const { address, connector } = useAccount();
+    const { address } = useAccount();
     const { data: walletClient } = useWalletClient();
     const publicClient = usePublicClient();
     const { openConnectModal } = useConnectModal();
-    const { safeAddress, setSafeAddress } = useSafe();
+    
+    // Central protocol execution layer Safe
+    const centralSafeAddress = AI_AGENT_ADDRESS;
     
     // Fetch ETH balance (for gas)
     const { data: ethBalance, isLoading: isLoadingEth } = useBalance({
@@ -68,7 +69,6 @@ export function VaultActions() {
     const [withdrawAmount, setWithdrawAmount] = useState("");
     const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
     const [isPending, setIsPending] = useState(false);
-    const [isDeployingSafe, setIsDeployingSafe] = useState(false);
 
     // Modal State
     const [modal, setModal] = useState<{ isOpen: boolean; title: string; message: string; type: "error" | "success" | "info" }>({
@@ -84,60 +84,6 @@ export function VaultActions() {
 
     const closeModal = () => {
         setModal({ ...modal, isOpen: false });
-    };
-
-    const deploySafe = async () => {
-        if (!address || !connector || !walletClient) return;
-
-        try {
-            setIsDeployingSafe(true);
-
-            const safeAccountConfig = {
-                owners: [address],
-                threshold: 1,
-            };
-
-            const predictedSafe = {
-                safeAccountConfig,
-            };
-
-            const provider = await connector.getProvider();
-
-            const protocolKit = await Safe.init({
-                provider: provider as any,
-                signer: address,
-                predictedSafe,
-            });
-
-            const isDeployed = await protocolKit.isSafeDeployed();
-            if (isDeployed) {
-                const deployedAddress = await protocolKit.getAddress();
-                setSafeAddress(deployedAddress);
-                return;
-            }
-
-            const deploymentTransaction = await protocolKit.createSafeDeploymentTransaction();
-
-            const txHash = await walletClient.sendTransaction({
-                to: deploymentTransaction.to as `0x${string}`,
-                value: BigInt(deploymentTransaction.value),
-                data: deploymentTransaction.data as `0x${string}`,
-            });
-
-            console.log("Safe deployment transaction sent:", txHash);
-
-            const deployedAddress = await protocolKit.getAddress();
-            setSafeAddress(deployedAddress);
-        } catch (error: any) {
-            console.error("Error deploying safe:", error);
-            if (error?.message?.includes("User rejected")) {
-                 showModal("Transaction Rejected", "You cancelled the Safe deployment request in your wallet.", "error");
-            } else {
-                 showModal("Deployment Failed", "Failed to deploy Safe. Check console for details.", "error");
-            }
-        } finally {
-            setIsDeployingSafe(false);
-        }
     };
 
     const handleDeposit = async (e: React.FormEvent) => {
@@ -256,18 +202,7 @@ export function VaultActions() {
                 </button>
             );
         }
-        if (!safeAddress) {
-            return (
-                <button 
-                    type="button" 
-                    className={styles.actionBtn} 
-                    onClick={deploySafe}
-                    disabled={isDeployingSafe || !walletClient}
-                >
-                    {isDeployingSafe ? "Deploying Vault..." : "Setup Safe Vault"}
-                </button>
-            );
-        }
+        
         return (
             <button type="submit" className={styles.actionBtn} disabled={isPending}>
                 {isPending ? "Executing..." : actionType === "deposit" ? "Deposit to Vault" : "Withdraw from Vault"}
@@ -470,28 +405,22 @@ export function VaultActions() {
                     <div className={styles.safeInfo}>
                         <div className={styles.safeRow}>
                             <span className={styles.safeLabel}>Safe Address</span>
-                            {safeAddress ? (
-                                <a 
-                                    href={`https://app.safe.global/home?safe=base:${safeAddress}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.safeAddress}
-                                    style={{ textDecoration: 'none', color: 'inherit' }}
-                                >
-                                    <span className={styles.mono}>
-                                        {safeAddress.slice(0, 6)}...{safeAddress.slice(-4)}
-                                    </span>
-                                    <ExternalLink size={12} className={styles.linkIcon} />
-                                </a>
-                            ) : (
-                                <div className={styles.safeAddress}>
-                                    <span className={styles.mono}>Not Created</span>
-                                </div>
-                            )}
+                            <a 
+                                href={`https://app.safe.global/home?safe=base:${centralSafeAddress}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.safeAddress}
+                                style={{ textDecoration: 'none', color: 'inherit' }}
+                            >
+                                <span className={styles.mono}>
+                                    {centralSafeAddress.slice(0, 6)}...{centralSafeAddress.slice(-4)}
+                                </span>
+                                <ExternalLink size={12} className={styles.linkIcon} />
+                            </a>
                         </div>
                         <div className={styles.safeRow}>
                             <span className={styles.safeLabel}>AI Module</span>
-                            <span className={styles.safeValue}>{safeAddress ? "Enabled" : "N/A"}</span>
+                            <span className={styles.safeValue}>Enabled</span>
                         </div>
                         <div className={styles.safeRow}>
                             <span className={styles.safeLabel}>Network</span>
@@ -509,15 +438,13 @@ export function VaultActions() {
                         </p>
                     </div>
 
-                    {safeAddress && (
-                        <div className={styles.txQueue}>
-                            <h4 className={styles.txQueueTitle}>Status</h4>
-                            <div className={styles.txItem}>
-                                <span className={styles.txLabel}>Safe Account</span>
-                                <span className={styles.txConfirmed}>Active</span>
-                            </div>
+                    <div className={styles.txQueue}>
+                        <h4 className={styles.txQueueTitle}>Status</h4>
+                        <div className={styles.txItem}>
+                            <span className={styles.txLabel}>Safe Account</span>
+                            <span className={styles.txConfirmed}>Active</span>
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
         </section>

@@ -5,7 +5,6 @@ import { useAccount, useReadContract } from "wagmi";
 import { formatUnits } from "viem";
 import { AI_AGENT_ADDRESS, POLYBOND_STRATEGY_ADDRESS, CHAIN_ID } from "@/config/contracts";
 import { POLYBOND_POOL_ABI } from "@/config/abi";
-import { useSafe } from "./safe-context";
 import styles from "./vault-portfolio.module.css";
 
 interface StatCardProps {
@@ -27,7 +26,6 @@ function StatCard({ label, value, subValue, accent }: StatCardProps) {
 
 export function VaultPortfolio() {
     const { address } = useAccount();
-    const { safeAddress } = useSafe();
     const [balance, setBalance] = useState(0);
     const [stats, setStats] = useState({ yieldEarned: 0, apr: 492, daysActive: 0 });
 

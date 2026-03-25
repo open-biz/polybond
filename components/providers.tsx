@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type ReactNode, useState } from "react";
 import { base } from "viem/chains";
 import { WagmiProvider } from "wagmi";
-import { SafeProvider } from "./safe-context";
 
 const config = getDefaultConfig({
   appName: "PolyBond",
@@ -26,9 +25,7 @@ export function Providers({ children }: { children: ReactNode }) {
           accentColorForeground: '#101a14',
           borderRadius: 'small',
         })}>
-          <SafeProvider>
-            {children}
-          </SafeProvider>
+          {children}
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

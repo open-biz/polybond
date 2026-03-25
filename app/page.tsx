@@ -5,7 +5,7 @@ import { HowItWorks } from "@/components/how-it-works"
 import { DisputedMarkets } from "@/components/disputed-markets"
 import { VaultDashboard } from "@/components/vault-dashboard"
 import { BentoFeatures } from "@/components/bento-features"
-import { SafeWalletConnector } from "@/components/safe-wallet-connector"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { Shield, Lock, TrendingUp } from "lucide-react"
 import styles from "./page.module.css"
 
@@ -28,7 +28,7 @@ export default function Home() {
             <span className={styles.logoText}>PolyBond</span>
           </div>
           <div className={styles.headerRight}>
-            <SafeWalletConnector />
+            <ConnectButton showBalance={false} />
           </div>
         </div>
       </header>

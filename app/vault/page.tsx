@@ -1,6 +1,6 @@
 import { DotMatrixBackground } from "@/components/dot-matrix-background";
 import { VaultContent } from "@/components/vault-content";
-import { SafeWalletConnector } from "@/components/safe-wallet-connector";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import styles from "./vault.module.css";
@@ -36,7 +36,7 @@ export default function VaultPage() {
                         </div>
                     </div>
                     <div className={styles.headerRight}>
-                        <SafeWalletConnector />
+                        <ConnectButton showBalance={false} />
                     </div>
                 </div>
             </header>
