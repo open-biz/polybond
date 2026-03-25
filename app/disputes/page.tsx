@@ -10,6 +10,7 @@ import styles from "./disputes.module.css";
 interface DisputedMarket {
     id: string;
     slug?: string;
+    eventSlug?: string;
     question: string;
     category: string;
     volume: string;
@@ -180,33 +181,39 @@ export default function DisputesPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                filteredMarkets.map((market) => (
-                                    <tr key={market.id}>
-                                        <td>
-                                            <div className={styles.questionCell}>
-                                                {market.question}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span className={`${styles.statusBadge} ${STATUS_CONFIG[market.status]?.className}`}>
-                                                {market.status}
-                                            </span>
-                                        </td>
-                                        <td className={styles.dimText}>{market.category}</td>
-                                        <td className={styles.priceText}>{market.volume}</td>
-                                        <td className={styles.priceText}>{market.lockInPrice}</td>
-                                        <td>
-                                            <a 
-                                                href={`https://polymarket.com/market/${market.slug || market.id}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className={styles.viewBtn}
-                                            >
-                                                View <ExternalLink size={12} />
-                                            </a>
-                                        </td>
-                                    </tr>
-                                ))
+                                filteredMarkets.map((market) => {
+                                    const url = market.eventSlug 
+                                        ? `https://polymarket.com/event/${market.eventSlug}` 
+                                        : `https://polymarket.com/market/${market.slug || market.id}`;
+
+                                    return (
+                                        <tr key={market.id}>
+                                            <td>
+                                                <div className={styles.questionCell}>
+                                                    {market.question}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span className={`${styles.statusBadge} ${STATUS_CONFIG[market.status]?.className}`}>
+                                                    {market.status}
+                                                </span>
+                                            </td>
+                                            <td className={styles.dimText}>{market.category}</td>
+                                            <td className={styles.priceText}>{market.volume}</td>
+                                            <td className={styles.priceText}>{market.lockInPrice}</td>
+                                            <td>
+                                                <a 
+                                                    href={url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={styles.viewBtn}
+                                                >
+                                                    View <ExternalLink size={12} />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                             )}
                         </tbody>
                     </table>

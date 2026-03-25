@@ -55,16 +55,15 @@ class PolyBondAgent:
             if status == "disputed": fe_status = "disputed"
             elif status == "proposed": fe_status = "bonding"
             
-            # Use event slug if available, fallback to market slug
+            # Get event slug
             event_slug = None
             if m.get('events') and len(m.get('events')) > 0:
                 event_slug = m.get('events')[0].get('slug')
             
-            slug = event_slug or m.get('slug')
-            
             output.append({
                 "id": m.get('id'),
-                "slug": slug,
+                "slug": m.get('slug'),
+                "eventSlug": event_slug,
                 "question": m.get('question'),
                 "category": m.get('groupItemTitle') or "General",
                 "volume": f"${float(m.get('volumeNum', 0)):,.0f}",
@@ -77,6 +76,8 @@ class PolyBondAgent:
         if not output:
             output.append({
                 "id": "none",
+                "slug": "none",
+                "eventSlug": "none",
                 "question": "Scanning for new UMA disputes...",
                 "category": "Scanning",
                 "volume": "N/A",

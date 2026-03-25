@@ -6,6 +6,7 @@ import styles from "./disputed-markets.module.css";
 interface DisputedMarket {
     id: string;
     slug?: string;
+    eventSlug?: string;
     question: string;
     lockInPrice: string;
     status: "bonding" | "resolved" | "monitoring" | "disputed";
@@ -89,10 +90,15 @@ export function DisputedMarkets() {
                             const config = STATUS_CONFIG[market.status] || { label: market.status, className: styles.statusMonitoring };
                             const isMonitoring = market.status === "monitoring" || market.id === "none";
                             
+                            // Robust URL construction: Prefer event slug if it exists
+                            const url = market.eventSlug 
+                                ? `https://polymarket.com/event/${market.eventSlug}` 
+                                : `https://polymarket.com/market/${market.slug || market.id}`;
+
                             return (
                                 <a
                                     key={market.id + idx}
-                                    href={isMonitoring ? undefined : `https://polymarket.com/market/${market.slug || market.id}`}
+                                    href={isMonitoring ? undefined : url}
                                     target={isMonitoring ? undefined : "_blank"}
                                     rel={isMonitoring ? undefined : "noopener noreferrer"}
                                     className={styles.item}
