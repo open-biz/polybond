@@ -27,6 +27,12 @@ export default function Home() {
             </svg>
             <span className={styles.logoText}>PolyBond</span>
           </div>
+          
+          <nav className={styles.nav}>
+            <Link href="/vault" className={styles.navLink}>Vault</Link>
+            <Link href="#disputes" className={styles.navLink}>Active Disputes</Link>
+          </nav>
+
           <div className={styles.headerRight}>
             <ConnectButton showBalance={false} />
           </div>

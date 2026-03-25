@@ -62,7 +62,7 @@ export function DisputedMarkets() {
     }, [markets]);
 
     return (
-        <section className={styles.section}>
+        <section id="disputes" className={styles.section}>
             <div className={styles.container}>
                 <div className={styles.header}>
                     <div>
