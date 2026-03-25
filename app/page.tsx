@@ -60,7 +60,7 @@ export default function Home() {
         </p>
         
         <div className={styles.agentsLinkWrapper}>
-          <Link href="https://github.com/vovk/polybond/blob/main/SKILLS.md" target="_blank" className={styles.agentsLink}>
+          <Link href="https://raw.githubusercontent.com/open-biz/polybond/refs/heads/main/SKILLS.md" target="_blank" className={styles.agentsLink}>
             For Agents: Read the documentation
           </Link>
         </div>
