@@ -62,7 +62,7 @@ To achieve both user sovereignty and AI-pooled automation, PolyBond uses **Gnosi
 
 PolyBond is powered by an autonomous Python loop leveraging **NVIDIA's Qwen 3.5 122b** model. The agent's core skills involve querying the **UMA Subgraph** on Polygon for newly disputed markets, mapping them to Polymarket order books via the `py-clob-client`, and executing highly profitable, low-risk trades.
 
-To achieve this securely and autonomously, the agent integrates several key hackathon ecosystem tools:
+To achieve this securely and autonomously, the agent integrates several key hackathon ecosystem tools: 
 
 ### 🎯 Hackathon Tracks & Integrations
 
