@@ -81,9 +81,10 @@ export default function DisputesPage() {
                     </Link>
 
                     <nav className={styles.nav}>
+                        <Link href="/" className={styles.navLink}>Home</Link>
                         <Link href="/vault" className={styles.navLink}>Vault</Link>
+                        <Link href="/strategy" className={styles.navLink}>Strategy</Link>
                         <Link href="/disputes" className={styles.navLinkActive}>Disputes</Link>
-                        <Link href="/#disputes" className={styles.navLink}>Feed</Link>
                     </nav>
 
                     <div className={styles.headerRight}>

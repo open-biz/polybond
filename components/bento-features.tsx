@@ -88,7 +88,7 @@ export function BentoFeatures() {
                         name="Live Bonding Feed"
                         description="Watch the AI agent buy winning shares at a discount across disputed markets."
                         cta="View feed"
-                        href="/vault"
+                        href="/disputes"
                         colSpan={2}
                         background={
                             <div className={styles.marqueeWrap}>

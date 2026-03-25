@@ -2,11 +2,8 @@ import Link from "next/link"
 import { DotMatrixBackground } from "@/components/dot-matrix-background"
 import { ManifestoCard } from "@/components/manifesto-card"
 import { HowItWorks } from "@/components/how-it-works"
-import { DisputedMarkets } from "@/components/disputed-markets"
 import { VaultDashboard } from "@/components/vault-dashboard"
-import { BentoFeatures } from "@/components/bento-features"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { Shield, Lock, TrendingUp } from "lucide-react"
 import styles from "./page.module.css"
 
 export default function Home() {
@@ -29,9 +26,10 @@ export default function Home() {
           </Link>
           
           <nav className={styles.nav}>
+            <Link href="/" className={styles.navLinkActive}>Home</Link>
             <Link href="/vault" className={styles.navLink}>Vault</Link>
+            <Link href="/strategy" className={styles.navLink}>Strategy</Link>
             <Link href="/disputes" className={styles.navLink}>Disputes</Link>
-            <Link href="#disputes" className={styles.navLink}>Feed</Link>
           </nav>
 
           <div className={styles.headerRight}>
@@ -72,51 +70,6 @@ export default function Home() {
 
       {/* How It Works */}
       <HowItWorks />
-
-      {/* Bento Feature Grid */}
-      <BentoFeatures />
-
-      {/* Disputed Markets Feed */}
-      <DisputedMarkets />
-
-      {/* Risk Section */}
-      <section id="risk-management" className={styles.riskSection}>
-        <div className={styles.riskContainer}>
-          <h2 className={styles.sectionTitle}>Risk Management</h2>
-          <div className={styles.riskGrid}>
-            <div className={styles.riskCard}>
-              <div className={styles.riskIconWrap}>
-                <Shield className={styles.riskIcon} />
-              </div>
-              <div className={styles.riskValue}>AI</div>
-              <div className={styles.riskLabel}>Confidence Threshold</div>
-              <p className={styles.riskDesc}>
-                Only enters positions when AI confidence exceeds strict thresholds
-              </p>
-            </div>
-            <div className={styles.riskCard}>
-              <div className={styles.riskIconWrap}>
-                <Lock className={styles.riskIcon} />
-              </div>
-              <div className={styles.riskValue}>10%</div>
-              <div className={styles.riskLabel}>Stop Loss</div>
-              <p className={styles.riskDesc}>
-                Automatic exit if UMA oracle shows unexpected movement
-              </p>
-            </div>
-            <div className={styles.riskCard}>
-              <div className={styles.riskIconWrap}>
-                <TrendingUp className={styles.riskIcon} />
-              </div>
-              <div className={styles.riskValue}>3%</div>
-              <div className={styles.riskLabel}>Conservative Failure Rate</div>
-              <p className={styles.riskDesc}>
-                Built-in assumption for edge case scenarios
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className={styles.ctaSection}>

@@ -1,0 +1,421 @@
+.main {
+    min-height: 100vh;
+    position: relative;
+    padding-top: 120px;
+    padding-bottom: 80px;
+}
+
+/* ===== Header (Copied from Global Pill Design) ===== */
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.headerInner {
+    width: 100%;
+    max-width: 1200px;
+    background: rgba(16, 26, 20, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(124, 184, 124, 0.15);
+    border-radius: 100px;
+    padding: 8px 12px 8px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #e8ede9;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+    opacity: 0.8;
+}
+
+.logoIcon {
+    width: 24px;
+    height: 24px;
+    color: var(--primary, #7cb87c);
+}
+
+.logoText {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(124, 184, 124, 0.05);
+    padding: 4px;
+    border-radius: 100px;
+    border: 1px solid rgba(124, 184, 124, 0.08);
+}
+
+.navLink, .navLinkActive {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(232, 237, 233, 0.6);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 100px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.navLink:hover {
+    color: #e8ede9;
+    background: rgba(124, 184, 124, 0.1);
+}
+
+.navLinkActive {
+    color: #7cb87c;
+    background: rgba(124, 184, 124, 0.12);
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ===== Page Header ===== */
+
+.pageHeader {
+    position: relative;
+    z-index: 10;
+    max-width: 1000px;
+    margin: 0 auto 64px;
+    padding: 0 24px;
+    text-align: center;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(124, 184, 124, 0.1);
+    color: #7cb87c;
+    border: 1px solid rgba(124, 184, 124, 0.2);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+}
+
+.title {
+    font-family: var(--font-serif);
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 16px;
+    line-height: 1.1;
+}
+
+.subtitle {
+    font-size: 20px;
+    color: #8a9b8e;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ===== Deep Dive Grid ===== */
+
+.deepDive {
+    position: relative;
+    z-index: 10;
+    max-width: 1000px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.card {
+    background: #0a0f0b;
+    border: 1px solid #1a241d;
+    padding: 32px;
+    border-radius: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.card:hover {
+    border-color: #7cb87c;
+}
+
+.cardIcon {
+    width: 48px;
+    height: 48px;
+    background: rgba(124, 184, 124, 0.1);
+    color: #7cb87c;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 12px;
+}
+
+.card p {
+    font-size: 14px;
+    color: #8a9b8e;
+    line-height: 1.6;
+}
+
+/* ===== Risk Management ===== */
+
+.riskSection {
+    position: relative;
+    z-index: 10;
+    padding: 80px 24px;
+}
+
+.riskContainer {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #7cb87c;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.sectionTitle {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 48px;
+}
+
+.riskGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.riskCard {
+    text-align: center;
+    padding: 40px 32px;
+    background: rgba(16, 26, 20, 0.5);
+    backdrop-filter: blur(16px);
+    border: 1px solid #1a241d;
+    border-radius: 20px;
+}
+
+.riskIconWrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(124, 184, 124, 0.08);
+    margin-bottom: 20px;
+}
+
+.riskIcon {
+    width: 24px;
+    height: 24px;
+    color: #7cb87c;
+}
+
+.riskValue {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 700;
+    color: #7cb87c;
+    margin-bottom: 4px;
+}
+
+.riskLabel {
+    font-size: 14px;
+    font-weight: 600;
+    color: #8a9b8e;
+    margin-bottom: 16px;
+}
+
+.riskDesc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(232, 237, 233, 0.6);
+}
+
+/* ===== Feed Teaser ===== */
+
+.feedTeaser {
+    position: relative;
+    z-index: 10;
+    max-width: 1000px;
+    margin: 0 auto 100px;
+    padding: 0 24px;
+}
+
+.teaserContent {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.teaserDesc {
+    font-size: 16px;
+    color: #8a9b8e;
+    max-width: 500px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+}
+
+.secondaryAction {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 100px;
+    border: 1px solid #7cb87c;
+    color: #7cb87c;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.secondaryAction:hover {
+    background: #7cb87c;
+    color: #0a0f0b;
+}
+
+/* ===== CTA Section ===== */
+
+.ctaSection {
+    position: relative;
+    z-index: 10;
+    padding: 100px 24px;
+    text-align: center;
+    background: radial-gradient(circle at center, rgba(124, 184, 124, 0.05) 0%, transparent 70%);
+}
+
+.ctaTitle {
+    font-family: var(--font-serif);
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+
+.ctaSub {
+    font-size: 18px;
+    color: #8a9b8e;
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+}
+
+.primaryAction {
+    display: inline-block;
+    padding: 16px 40px;
+    border-radius: 100px;
+    background: #7cb87c;
+    color: #0a0f0b;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primaryAction:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 184, 124, 0.3);
+}
+
+/* ===== Footer ===== */
+
+.footer {
+    position: relative;
+    z-index: 10;
+    padding: 48px 24px;
+    border-top: 1px solid #1a241d;
+}
+
+.footerInner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footerLogo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #4a5a4e;
+}
+
+.footerLogoIcon {
+    width: 18px;
+    height: 18px;
+    color: #7cb87c;
+}
+
+.footerText {
+    font-size: 13px;
+    color: #4a5a4e;
+}
+
+@media (max-width: 768px) {
+    .grid, .riskGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header {
+        padding: 12px;
+    }
+
+    .headerInner {
+        padding: 6px 8px 6px 16px;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .footerInner {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+}

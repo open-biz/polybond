@@ -31,9 +31,10 @@ export default function VaultPage() {
                     </Link>
 
                     <nav className={styles.nav}>
+                        <Link href="/" className={styles.navLink}>Home</Link>
                         <Link href="/vault" className={styles.navLinkActive}>Vault</Link>
+                        <Link href="/strategy" className={styles.navLink}>Strategy</Link>
                         <Link href="/disputes" className={styles.navLink}>Disputes</Link>
-                        <Link href="/#disputes" className={styles.navLink}>Feed</Link>
                     </nav>
 
                     <div className={styles.headerRight}>

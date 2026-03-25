@@ -84,6 +84,19 @@
   background: rgba(124, 184, 124, 0.1);
 }
 
+.navLinkActive {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7cb87c;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 100px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  background: rgba(124, 184, 124, 0.12);
+}
+
 .headerRight {
   display: flex;
   align-items: center;
