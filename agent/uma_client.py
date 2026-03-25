@@ -1,50 +1,44 @@
 import requests
-import os
-import json
-from gql import gql, Client
-from gql.transport.requests import RequestsHTTPTransport
 from .config import Config
 
 class UMAClient:
     def __init__(self):
-        self.transport = RequestsHTTPTransport(url=Config.UMA_SUBGRAPH_URL, verify=True, retries=3)
-        self.client = Client(transport=self.transport, fetch_schema_from_transport=False)
+        # Use Gamma API for directly finding disputed Polymarket markets
+        self.base_url = "https://gamma-api.polymarket.com"
 
     def get_disputed_markets(self):
-        # Using assertions as per UMA v3 docs (Polymarket uses v3)
-        query = gql("""
-        {
-          assertions(where: {disputer_not: null}, orderBy: assertionTimestamp, orderDirection: desc, first: 10) {
-            id
-            assertionId
-            claim
-            asserter
-            disputer
-            currency
-            bond
-            assertionTimestamp
-            expirationTimestamp
-            settled
-            settlementResolution
-          }
-        }
-        """)
+        """
+        Fetches markets from Polymarket that are currently in a disputed state via UMA.
+        """
         try:
-            result = self.client.execute(query)
-            return result.get('assertions', [])
+            # 1. Try fetching 'disputed' markets
+            url = f"{self.base_url}/markets?uma_resolution_status=disputed&active=true&limit=20"
+            resp = requests.get(url)
+            if resp.status_code == 200:
+                markets = resp.json()
+                if markets:
+                    print(f"Found {len(markets)} disputed markets via Gamma API")
+                    return markets
+
+            # 2. Fallback to 'proposed' markets (arbitrage opportunities before they are disputed)
+            print("No 'disputed' markets found. Checking for 'proposed' markets...")
+            url = f"{self.base_url}/markets?uma_resolution_status=proposed&active=true&limit=20"
+            resp = requests.get(url)
+            if resp.status_code == 200:
+                markets = resp.json()
+                if markets:
+                    print(f"Found {len(markets)} proposed markets via Gamma API")
+                    return markets
+
+            return []
         except Exception as e:
-            print(f"Subgraph query failed, using mock data: {e}")
-            # Fallback to mock data for development
-            mock_file = "public/data/disputes.json"
-            if os.path.exists(mock_file):
-                with open(mock_file, 'r') as f:
-                    return json.load(f)
+            print(f"Error fetching disputed markets from Gamma API: {e}")
             return []
 
 if __name__ == "__main__":
     # Test
     client = UMAClient()
     disputes = client.get_disputed_markets()
-    print(f"Found {len(disputes)} disputed markets")
+    print(f"Found {len(disputes)} total opportunities")
     for d in disputes:
-        print(d)
+        print(f"ID: {d.get('id')}, Question: {d.get('question')}, Status: {d.get('uma_resolution_status')}")

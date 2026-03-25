@@ -18,6 +18,9 @@ class LLMClient:
         Polymarket Market Data:
         {json.dumps(market_data, indent=2)}
         
+        UMA Status: {market_data.get('uma_resolution_status')}
+        Proposed Price: {market_data.get('uma_proposed_price')}
+        
         Macro Context:
         {json.dumps(macro_context.get('macro', {}), indent=2)}
         

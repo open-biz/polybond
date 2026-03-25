@@ -53,22 +53,7 @@ class PolyClient:
             except Exception as e:
                 print(f"Error fetching from Gamma Markets: {e}")
         
-        # Fallback to a real example market if the slug fails (for demonstration)
-        # This is a real active market slug as of early 2026 / late 2025 context
-        print(f"Market search failed for {identifier}, using fallback real market data structure")
-        return {
-            "id": "real-market-id-fallback",
-            "question": "Will the ground offensive happen?",
-            "slug": "israel-lebanon-offensive-march-31",
-            "active": True,
-            "markets": [
-                {
-                    "marketMakerAddress": "0x...",
-                    "clobTokenIds": ["62174615336627888814453166657652087168672936561990669762061326057126859157348", "62174615336627888814453166657652087168672936561990669762061326057126859157349"],
-                    "outcomes": ["Yes", "No"]
-                }
-            ]
-        }
+        return None
 
     def get_orderbook(self, token_id):
         return self.client.get_order_book(token_id)
