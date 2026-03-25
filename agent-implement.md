@@ -54,3 +54,8 @@ To achieve true autonomy, the agent is designed to run completely unsupervised:
 * **The Execution Loop:** The Python script runs as a continuous daemon (using an infinite `while True:` loop with a `time.sleep(300)` for a 5-minute cycle, or via a `cron` job).
 * **Process Management:** In production, it should be managed by `systemd`, `Supervisor`, or packaged in a Docker container with `--restart unless-stopped`.
 * **Autonomy vs. Safety:** Because the OpenWallet policy engine cryptographically restricts the agent's actions (e.g., maximum daily spend, allowed contracts), we can safely let it run autonomously 24/7. Even if the LLM hallucinates, it cannot violate the hardcoded financial constraints.
+
+
+References
+- Moonpay MCP https://support.moonpay.com/en/articles/592627-openclaw-moonpay-cli-setup-guide 
+- Moonpay OpenWallet https://docs.openwallet.sh/doc.html?slug=sdk-python 

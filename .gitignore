@@ -2,6 +2,7 @@
 node_modules/
 .pnp
 .pnp.js
+ref/
 
 # Next.js
 .next/

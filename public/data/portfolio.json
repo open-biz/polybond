@@ -1,6 +1,6 @@
 {
-    "balance": 0,
-    "yieldEarned": 0,
-    "apr": 0,
-    "daysActive": 0
+  "balance": 530,
+  "yieldEarned": 0.1,
+  "apr": 297,
+  "daysActive": 2
 }
