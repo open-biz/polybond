@@ -8,7 +8,7 @@ interface DisputedMarket {
     slug?: string;
     question: string;
     lockInPrice: string;
-    status: "bonding" | "resolved" | "monitoring";
+    status: "bonding" | "resolved" | "monitoring" | "disputed";
     timeAgo: string;
 }
 
@@ -16,6 +16,7 @@ const STATUS_CONFIG = {
     bonding: { label: "Bonding", className: styles.statusBonding },
     resolved: { label: "Resolved", className: styles.statusResolved },
     monitoring: { label: "Monitoring", className: styles.statusMonitoring },
+    disputed: { label: "Disputed", className: styles.statusDisputed },
 };
 
 export function DisputedMarkets() {
@@ -70,7 +71,7 @@ export function DisputedMarkets() {
                         </div>
                     ) : (
                         markets.slice(0, visibleCount).map((market, idx) => {
-                            const config = STATUS_CONFIG[market.status];
+                            const config = STATUS_CONFIG[market.status] || { label: market.status, className: styles.statusMonitoring };
                             return (
                                 <a
                                     key={market.id}
