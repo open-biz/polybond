@@ -2,6 +2,7 @@
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  padding-top: 140px;
 }
 
 /* ===== Header ===== */
@@ -15,20 +16,22 @@
   padding: 20px 24px;
   display: flex;
   justify-content: center;
+  pointer-events: none; /* Allow clicking through padding */
 }
 
 .headerInner {
   width: 100%;
-  max-width: 1200px;
-  background: rgba(16, 26, 20, 0.6);
+  max-width: 1120px;
+  background: rgba(10, 15, 11, 0.8);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(124, 184, 124, 0.15);
+  border: 1px solid rgba(124, 184, 124, 0.2);
   border-radius: 100px;
   padding: 8px 12px 8px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  pointer-events: auto; /* Re-enable for the bar itself */
 }
 
 .logo {
