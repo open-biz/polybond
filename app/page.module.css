@@ -7,60 +7,87 @@
 /* ===== Header ===== */
 
 .header {
-  position: relative;
-  z-index: 10;
-  padding: 24px 24px 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: center;
 }
 
 .headerInner {
-  max-width: 1120px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  background: rgba(16, 26, 20, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 184, 124, 0.15);
+  border-radius: 100px;
+  padding: 8px 12px 8px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .logo {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: rgba(232, 237, 233, 0.8);
+  color: #e8ede9;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
 }
 
 .logoIcon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   color: var(--primary, #7cb87c);
 }
 
 .logoText {
   font-family: var(--font-serif);
   font-size: 20px;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 8px;
+  background: rgba(124, 184, 124, 0.05);
+  padding: 4px;
+  border-radius: 100px;
+  border: 1px solid rgba(124, 184, 124, 0.08);
 }
 
 .navLink {
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(138, 155, 142, 0.8);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(232, 237, 233, 0.6);
   text-decoration: none;
-  transition: color 0.2s ease;
+  padding: 8px 16px;
+  border-radius: 100px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .navLink:hover {
-  color: var(--primary, #7cb87c);
+  color: #e8ede9;
+  background: rgba(124, 184, 124, 0.1);
 }
 
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .network {
@@ -327,6 +354,22 @@
 /* ===== Responsive ===== */
 
 @media (max-width: 768px) {
+  .header {
+    padding: 12px;
+  }
+
+  .headerInner {
+    padding: 6px 8px 6px 16px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .logoText {
+    font-size: 16px;
+  }
+
   .riskGrid {
     grid-template-columns: 1fr;
     gap: 16px;

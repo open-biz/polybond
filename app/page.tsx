@@ -17,7 +17,7 @@ export default function Home() {
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <div className={styles.logo}>
+          <Link href="/" className={styles.logo}>
             <svg
               viewBox="0 0 24 24"
               className={styles.logoIcon}
@@ -26,11 +26,11 @@ export default function Home() {
               <path d="M12 2L8 6H4v4l-4 4 4 4v4h4l4 4 4-4h4v-4l4-4-4-4V6h-4L12 2zm0 4a6 6 0 110 12 6 6 0 010-12z" />
             </svg>
             <span className={styles.logoText}>PolyBond</span>
-          </div>
+          </Link>
           
           <nav className={styles.nav}>
             <Link href="/vault" className={styles.navLink}>Vault</Link>
-            <Link href="#disputes" className={styles.navLink}>Active Disputes</Link>
+            <Link href="#disputes" className={styles.navLink}>Feed</Link>
           </nav>
 
           <div className={styles.headerRight}>

@@ -97,8 +97,8 @@ export function DisputedMarkets() {
                                     rel={isMonitoring ? undefined : "noopener noreferrer"}
                                     className={styles.item}
                                     style={{ 
-                                        animation: "fadeIn 0.5s ease-out forwards", 
-                                        textDecoration: 'none',
+                                        animation: `fadeIn 0.4s ease-out ${idx % 5 * 0.1}s forwards`, 
+                                        opacity: 0,
                                         cursor: isMonitoring ? 'default' : 'pointer'
                                     }}
                                 >
